@@ -1,0 +1,5 @@
+Hi there,\n
+\n
+{% block content %}{% endblock content %}
+\n
+Your App
