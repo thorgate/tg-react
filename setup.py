@@ -4,6 +4,8 @@
 import os
 import sys
 
+os.environ["DJANGO_SETTINGS_MODULE"] = "dummy_settings"
+
 import tg_react
 
 try:
