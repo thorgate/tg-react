@@ -1,15 +1,15 @@
-
 import json
 import base64
 import phonenumbers
 
 from rest_framework import serializers
+from rest_framework.utils.field_mapping import ClassLookupDict
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.translation import ugettext as _
 
-from tg_react.settings import exclude_fields_from_user_details, get_user_model_name_fields
+from tg_react.settings import exclude_fields_from_user_details, get_user_signup_fields
 
 
 class UserDetailsSerializer(serializers.ModelSerializer):
@@ -64,9 +64,22 @@ class AuthenticationSerializer(serializers.Serializer):
         return validated_data
 
 
-class BaseSignupSerializer(serializers.Serializer):
+class SignupSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        fields_we_do_not_want = [
+            'id', 'email', 'password', 'is_staff', 'is_superuser', 'is_active', 'date_joined', 'last_login']
+        important_signup_fields = get_user_signup_fields()
+        model = get_user_model()
+        # Using ModelSerializers model field to serializer field mapper
+        # to build missing fields for signup serializer
+        mapping = ClassLookupDict(serializers.ModelSerializer.serializer_field_mapping)
+        for model_field in model._meta.fields:
+            if model_field.name in important_signup_fields and model_field.name not in fields_we_do_not_want:
+                self._declared_fields[model_field.name] = mapping[model_field](required=True)
 
     def validate_email(self, data):
         u = self.context['request'].user
@@ -83,27 +96,6 @@ class BaseSignupSerializer(serializers.Serializer):
         except phonenumbers.phonenumberutil.NumberParseException:
             raise serializers.ValidationError(_("Phone number needs to include valid country code (E.g +37255555555)"))
         return data
-
-
-class DefaultSignupSerializer(BaseSignupSerializer):
-    name = serializers.CharField()
-
-
-class FullnameSignupSerializer(BaseSignupSerializer):
-    first_name = serializers.CharField(required=True)
-    last_name = serializers.CharField(required=True)
-
-
-def get_signup_serializer():
-    user_auth_fields = get_user_model_name_fields()
-    if 'name' in user_auth_fields:
-        return DefaultSignupSerializer
-    elif 'first_name' in user_auth_fields and 'last_name' in user_auth_fields:
-        return FullnameSignupSerializer
-    else:
-        return BaseSignupSerializer
-
-SSerializer = get_signup_serializer()
 
 
 class ForgotPasswordSerializer(serializers.Serializer):
@@ -125,7 +117,7 @@ class ForgotPasswordSerializer(serializers.Serializer):
         return email
 
     def validate(self, data):
-        # Serealize uid and token to json then encode to base64
+        # Serialize uid and token to json then encode to base64
         # Feauters:
         # one parameter for api insted two (uid and token)
         uid_and_token = json.dumps({

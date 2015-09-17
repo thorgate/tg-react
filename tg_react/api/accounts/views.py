@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import generics, status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -7,7 +8,7 @@ from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 
 from .serializers import (
-        AuthenticationSerializer, UserDetailsSerializer, SSerializer, ForgotPasswordSerializer,
+        AuthenticationSerializer, UserDetailsSerializer, SignupSerializer, ForgotPasswordSerializer,
         RecoveryPasswordSerializer)
 
 # for email notifications
@@ -16,7 +17,7 @@ from django.template import Context
 
 from django.utils.translation import ugettext as _
 
-from settings.base import SITE_URL
+from tg_react.settings import get_password_recovery_url
 
 
 class UnsafeSessionAuthentication(SessionAuthentication):
@@ -67,7 +68,7 @@ class LogoutView(APIView):
 
 
 class SignUpView(APIView):
-    serializer_class = SSerializer
+    serializer_class = SignupSerializer
     permission_classes = (AllowAny, )
     authentication_classes = (UnsafeSessionAuthentication, )
 
@@ -97,7 +98,7 @@ class ForgotPassword(APIView):
 
     # Example request data
     # {
-    #   "email" : "chuvak2353@gmail.com"
+    #   "email" : "somename@somedomain.com"
     # }
 
     serializer_class = ForgotPasswordSerializer
@@ -108,7 +109,8 @@ class ForgotPassword(APIView):
         # define email notification logic
         from django.core.mail import EmailMultiAlternatives
         # make confirm reset url
-        confirm_reset_url = '%s/reset_password/%s' % (SITE_URL, uid_and_token_b64)
+        path = get_password_recovery_url() % uid_and_token_b64
+        confirm_reset_url = settings.SITE_URL + path
 
         subject = _("Password restore")
         context = Context({'user': user, 'confirm_reset_url': confirm_reset_url})
