@@ -64,6 +64,14 @@ class AuthenticationSerializer(serializers.Serializer):
         return validated_data
 
 
+def phonenumber_validation(data):
+    try:
+        nr = phonenumbers.parse(data, None)
+    except phonenumbers.phonenumberutil.NumberParseException:
+        raise serializers.ValidationError(_("Phone number needs to include valid country code (E.g +37255555555)"))
+    return data
+
+
 class SignupSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
@@ -76,25 +84,26 @@ class SignupSerializer(serializers.Serializer):
         model = get_user_model()
         # Using ModelSerializers model field to serializer field mapper
         # to build missing fields for signup serializer
-        mapping = ClassLookupDict(serializers.ModelSerializer.serializer_field_mapping)
+        original_mapping = serializers.ModelSerializer.serializer_field_mapping
+
+        try:
+            from phonenumber_field.modelfields import PhoneNumberField
+            original_mapping.update({PhoneNumberField: serializers.CharField})
+        except ImportError:
+            pass
+
+        mapping = ClassLookupDict(original_mapping)
         for model_field in model._meta.fields:
             if model_field.name in important_signup_fields and model_field.name not in fields_we_do_not_want:
-                self._declared_fields[model_field.name] = mapping[model_field](required=True)
+                field_kwargs = {'required': True}
+                if 'phone' in model_field.name:
+                    field_kwargs['validators'] = [phonenumber_validation]
+                self._declared_fields[model_field.name] = mapping[model_field](**field_kwargs)
 
     def validate_email(self, data):
-        u = self.context['request'].user
-        if u.is_authenticated() and data == u.email:
-            return data
-        else:
-            if get_user_model().objects.filter(email=data).exists():
-                raise serializers.ValidationError(_("User with this e-mail address already exists"))
-        return data
+        if get_user_model().objects.filter(email=data).exists():
+            raise serializers.ValidationError(_("User with this e-mail address already exists"))
 
-    def validate_phone(self, data):
-        try:
-            nr = phonenumbers.parse(data, None)
-        except phonenumbers.phonenumberutil.NumberParseException:
-            raise serializers.ValidationError(_("Phone number needs to include valid country code (E.g +37255555555)"))
         return data
 
 
