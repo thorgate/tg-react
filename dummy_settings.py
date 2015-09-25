@@ -1,1 +1,3 @@
 SECRET_KEY = "dummy"
+
+TGR_POST_LOGIN_HANDLER = ''

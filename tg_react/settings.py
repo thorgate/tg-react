@@ -26,7 +26,7 @@ def configure():
         raise ImproperlyConfigured("settings.TGR_EXCLUDED_USER_FIELDS must be list|tuple")
 
     handler = get_post_login_handler()
-    if handler is not None:
+    if handler is not None and not isinstance(handler, str):
         raise ImproperlyConfigured("settings.TGR_POST_LOGIN_HANDLER must be module path")
 
     recovery_url = get_password_recovery_url()
