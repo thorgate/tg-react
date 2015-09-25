@@ -18,6 +18,10 @@ def get_post_login_handler():
     return getattr(settings, 'TGR_POST_LOGIN_HANDLER', None)
 
 
+def get_post_logout_handler():
+    return getattr(settings, 'TGR_POST_LOGOUT_HANDLER', None)
+
+
 def configure():
     if not isinstance(exclude_fields_from_user_details(), (list, tuple)):
         raise ImproperlyConfigured("settings.TGR_EXCLUDED_USER_FIELDS must be list|tuple")
@@ -28,6 +32,10 @@ def configure():
     handler = get_post_login_handler()
     if handler is not None and not isinstance(handler, str):
         raise ImproperlyConfigured("settings.TGR_POST_LOGIN_HANDLER must be module path")
+
+    handler = get_post_logout_handler()
+    if handler is not None and not isinstance(handler, str):
+        raise ImproperlyConfigured("settings.TGR_POST_LOGOUT_HANDLER must be module path")
 
     recovery_url = get_password_recovery_url()
     if not isinstance(recovery_url, (str)):

@@ -18,7 +18,7 @@ from django.template import Context
 
 from django.utils.translation import ugettext as _
 
-from tg_react.settings import get_password_recovery_url, get_post_login_handler
+from tg_react.settings import get_password_recovery_url, get_post_login_handler, get_post_logout_handler
 
 
 def do_login(request, user):
@@ -32,11 +32,30 @@ def do_login(request, user):
     login(request, user)
 
     post_login = get_post_login_handler()
-
     if post_login:
         post_login = import_string(post_login)
 
         post_login(user=user, request=request, old_session=old_session)
+
+
+def do_logout(request):
+    if hasattr(request, 'session'):
+        old_session = request.session.session_key
+
+    else:
+        old_session = None
+
+    old_user = request.user
+
+    from django.contrib.auth import logout
+    logout(request)
+
+    post_logout = get_post_logout_handler()
+    if post_logout:
+        post_logout = import_string(post_logout)
+
+        post_logout(user=old_user, request=request, old_session=old_session)
+
 
 
 class UnsafeSessionAuthentication(SessionAuthentication):
@@ -79,8 +98,7 @@ class LogoutView(APIView):
     authentication_classes = (SessionAuthentication, )
 
     def post(self, request):
-        from django.contrib.auth import logout
-        logout(request)
+        do_logout(request)
 
         return Response({'success': True})
 
