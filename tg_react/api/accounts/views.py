@@ -17,7 +17,23 @@ from django.template import Context
 
 from django.utils.translation import ugettext as _
 
-from tg_react.settings import get_password_recovery_url
+from tg_react.settings import get_password_recovery_url, get_post_login_handler
+
+
+def do_login(request, user):
+    if hasattr(request, 'session'):
+        old_session = request.session.session_key
+
+    else:
+        old_session = None
+
+    from django.contrib.auth import login
+    login(request, user)
+
+    post_login = get_post_login_handler()
+
+    if post_login:
+        post_login(user=user, request=request, old_session=old_session)
 
 
 class UnsafeSessionAuthentication(SessionAuthentication):
@@ -47,8 +63,7 @@ class AuthenticationView(APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.DATA)
         if serializer.is_valid():
-            from django.contrib.auth import login
-            login(request, serializer.user)
+            do_login(request, serializer.user)
 
             return Response({'success': True})
 
@@ -84,7 +99,8 @@ class SignUpView(APIView):
 
             from django.contrib.auth import login, authenticate
             user = authenticate(email=data['email'], password=password)
-            login(request, user)
+
+            do_login(request, user)
 
             return Response({'success': True})
 
