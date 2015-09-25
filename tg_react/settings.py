@@ -22,8 +22,8 @@ def configure():
     if not isinstance(exclude_fields_from_user_details(), (list, tuple)):
         raise ImproperlyConfigured("settings.TGR_EXCLUDED_USER_FIELDS must be list|tuple")
 
-    if not isinstance(exclude_fields_from_user_details(), (list, tuple)):
-        raise ImproperlyConfigured("settings.TGR_EXCLUDED_USER_FIELDS must be list|tuple")
+    if not isinstance(get_user_signup_fields(), (list, tuple)):
+        raise ImproperlyConfigured("settings.TGR_USER_SIGNUP_FIELDS must be list|tuple")
 
     handler = get_post_login_handler()
     if handler is not None and not isinstance(handler, str):
