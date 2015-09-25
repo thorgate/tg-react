@@ -27,8 +27,7 @@ def configure():
 
     handler = get_post_login_handler()
     if handler is not None:
-        if not callable(handler):
-            raise ImproperlyConfigured("settings.TGR_POST_LOGIN_HANDLER must be callable")
+        raise ImproperlyConfigured("settings.TGR_POST_LOGIN_HANDLER must be module path")
 
     recovery_url = get_password_recovery_url()
     if not isinstance(recovery_url, (str)):

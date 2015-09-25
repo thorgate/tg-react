@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils.module_loading import import_string
 from rest_framework import generics, status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -33,6 +34,8 @@ def do_login(request, user):
     post_login = get_post_login_handler()
 
     if post_login:
+        post_login = import_string(post_login)
+
         post_login(user=user, request=request, old_session=old_session)
 
 
