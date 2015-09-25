@@ -44,7 +44,7 @@ class UnsafeSessionAuthentication(SessionAuthentication):
         pass
 
 
-class UserDetails(generics.RetrieveAPIView):
+class UserDetails(generics.RetrieveUpdateAPIView):
     serializer_class = UserDetailsSerializer
     authentication_classes = (SessionAuthentication, )
     permission_classes = (IsAuthenticated, )
