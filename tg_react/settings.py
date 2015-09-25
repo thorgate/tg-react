@@ -38,8 +38,8 @@ def configure():
         raise ImproperlyConfigured("settings.TGR_POST_LOGOUT_HANDLER must be module path")
 
     recovery_url = get_password_recovery_url()
-    if not isinstance(recovery_url, (str)):
-        raise ImproperlyConfigured("settings.TGR_PASSWORD_RECOVERY_URL must be list|tuple")
+    if not isinstance(recovery_url, str):
+        raise ImproperlyConfigured("settings.TGR_PASSWORD_RECOVERY_URL must be str")
 
     try:
         t = recovery_url % 'TEST'
