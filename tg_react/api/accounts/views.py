@@ -57,7 +57,6 @@ def do_logout(request):
         post_logout(user=old_user, request=request, old_session=old_session)
 
 
-
 class UnsafeSessionAuthentication(SessionAuthentication):
     def enforce_csrf(self, request):
         pass
