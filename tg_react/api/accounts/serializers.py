@@ -13,6 +13,9 @@ from tg_react.settings import exclude_fields_from_user_details, get_user_signup_
 
 
 class UserDetailsSerializer(serializers.ModelSerializer):
+    # Overriding default field to get rid of existing uniquevalidator
+    # because i want to show better validation message (see validate_email below)
+    email = serializers.EmailField(validators=[])
 
     class Meta:
         model = get_user_model()
@@ -24,6 +27,12 @@ class UserDetailsSerializer(serializers.ModelSerializer):
             'is_active': {'read_only': True},
             'date_joined': {'read_only': True},
         }
+
+    def validate_email(self, data):
+        if get_user_model().objects.filter(email=data).exists() and self.instance.email != data:
+            raise serializers.ValidationError(_("User with this e-mail address already exists"))
+
+        return data
 
 
 class AuthenticationSerializer(serializers.Serializer):
