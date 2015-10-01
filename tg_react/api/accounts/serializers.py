@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.translation import ugettext as _
 
-from tg_react.settings import exclude_fields_from_user_details, get_user_signup_fields
+from tg_react.settings import exclude_fields_from_user_details, get_user_signup_fields, user_extra_fields
 
 
 class UserDetailsSerializer(serializers.ModelSerializer):
@@ -33,6 +33,14 @@ class UserDetailsSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(_("User with this e-mail address already exists"))
 
         return data
+
+    def get_fields(self):
+        static_fields = super().get_fields()
+
+        for name, cfg in user_extra_fields.items():
+            static_fields[name] = cfg[0](**cfg[1])
+
+        return static_fields
 
 
 class AuthenticationSerializer(serializers.Serializer):

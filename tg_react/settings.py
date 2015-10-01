@@ -1,6 +1,12 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 
+try:
+    from django.utils.module_loading import import_string
+
+except ImportError:
+    from django.utils.module_loading import import_by_path as import_string
+
 
 def get_user_signup_fields():
     return getattr(settings, 'TGR_USER_SIGNUP_FIELDS', ['name', ])
@@ -8,6 +14,26 @@ def get_user_signup_fields():
 
 def exclude_fields_from_user_details():
     return getattr(settings, 'TGR_EXCLUDED_USER_FIELDS', [])
+
+
+def _user_extra_fields(validate=False):
+    fields = getattr(settings, 'TGR_USER_EXTRA_FIELDS', {})
+
+    if validate:
+        if not isinstance(fields, dict):
+            raise ImproperlyConfigured("settings.TGR_USER_EXTRA_FIELDS must be a dict")
+
+    res = {}
+    for name, conf in fields.items():
+        if validate and not isinstance(conf, (str, list)):
+            raise ImproperlyConfigured("settings.TGR_USER_EXTRA_FIELDS value must be a module path or list[path, kwargs]")
+
+        path = conf if not isinstance(conf, list) else conf[0]
+        kwargs = {} if not isinstance(conf, list) else conf[1] or {}
+
+        res[name] = [import_string(path), kwargs]
+
+    return res
 
 
 def get_password_recovery_url():
@@ -50,3 +76,4 @@ def configure():
 
 
 configure()
+user_extra_fields = _user_extra_fields(validate=True)
