@@ -48,6 +48,10 @@ def get_post_logout_handler():
     return getattr(settings, 'TGR_POST_LOGOUT_HANDLER', None)
 
 
+def get_static_dir():
+    return getattr(settings, 'TGR_STATICFILES_DIRS', settings.STATICFILES_DIRS)
+
+
 def configure():
     if not isinstance(exclude_fields_from_user_details(), (list, tuple)):
         raise ImproperlyConfigured("settings.TGR_EXCLUDED_USER_FIELDS must be list|tuple")

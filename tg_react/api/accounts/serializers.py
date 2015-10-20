@@ -5,6 +5,7 @@ import phonenumbers
 from rest_framework import serializers
 from rest_framework.utils.field_mapping import ClassLookupDict
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.translation import ugettext as _
@@ -201,3 +202,7 @@ class RecoveryPasswordSerializer(serializers.Serializer):
             msg = "%s %s" % (_("This password recovery link has expired or associated user does not exist."), 
                              _("Use password recovery form to get new e-mail with new link."))
             raise serializers.ValidationError(msg)
+
+
+class LanguageCodeSerializer(serializers.Serializer):
+    language_code = serializers.ChoiceField(choices=settings.LANGUAGES, required=True)

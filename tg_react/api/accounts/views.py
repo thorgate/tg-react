@@ -7,16 +7,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext as _, get_language_from_request
 
 from .serializers import (
         AuthenticationSerializer, UserDetailsSerializer, SignupSerializer, ForgotPasswordSerializer,
-        RecoveryPasswordSerializer)
+        RecoveryPasswordSerializer, LanguageCodeSerializer)
 
 # for email notifications
 from django.template.loader import get_template
 from django.template import Context
-
-from django.utils.translation import ugettext as _
 
 from tg_react.settings import get_password_recovery_url, get_post_login_handler, get_post_logout_handler
 
@@ -97,6 +96,31 @@ class AuthenticationView(APIView):
             do_login(request, serializer.user)
 
             return Response({'success': True})
+
+        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SetLanguageView(generics.RetrieveUpdateAPIView):
+
+    throttle_classes = ()
+    permission_classes = (AllowAny,)
+    authentication_classes = (UnsafeSessionAuthentication, )
+    serializer_class = LanguageCodeSerializer
+
+    @property
+    def raw_request(self):
+        return self.request._request
+
+    def get_object(self):
+        return {'language_code': getattr(self.raw_request, '_lang', get_language_from_request(self.raw_request))}
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.DATA)
+        if serializer.is_valid():
+            setattr(self.raw_request, 'update_language_cookie', serializer.validated_data['language_code'])
+            setattr(self.raw_request, '_lang', serializer.validated_data['language_code'])
+
+            return self.get(request, *args, **kwargs)
 
         return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
