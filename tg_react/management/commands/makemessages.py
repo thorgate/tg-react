@@ -100,8 +100,35 @@ class ParseJsTranslations(object):
 
         self.results = dict(self.results)
 
+    def smart_split_args(self, contents):
+        contents = contents.strip('()')
+
+        out = ''
+        in_quotes = False
+        c = '1'
+        pos = 0
+        args = []
+
+        while c and pos < len(contents):
+            c = contents[pos]
+            out += c
+            pos += 1
+
+            if c in ['"', "'"]:
+                in_quotes = not in_quotes
+            elif c == ',':
+                if not in_quotes:
+                    args.append(out[-1])
+                    out = ''
+
+        if out:
+            args.append(out)
+            out = ''
+
+        return args
+
     def clean_args(self, out, fn):
-        args = out.strip('()').split(',')
+        args = self.smart_split_args(out)
 
         fixed_args = []
         signature = (self.file_name, fn, out)
