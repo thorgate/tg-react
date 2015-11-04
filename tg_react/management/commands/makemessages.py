@@ -118,7 +118,7 @@ class ParseJsTranslations(object):
                 in_quotes = not in_quotes
             elif c == ',':
                 if not in_quotes:
-                    args.append(out[-1])
+                    args.append(out[:-1])
                     out = ''
 
         if out:
