@@ -54,26 +54,38 @@ const GettextVisitor = {
 
 function processFile(filename) {
     var file = fs.readFileSync(filename, 'utf8');
-    var ast  = babylon.parse(file, {
-        sourceType: 'module',
+    try {
+        var ast = babylon.parse(file, {
+            sourceType: 'module',
 
-        plugins: [
-            'jsx',
-            'flow',
-            'asyncFunctions',
-            'classConstructorCall',
-            'doExpressions',
-            'trailingFunctionCommas',
-            'objectRestSpread',
-            'decorators',
-            'classProperties',
-            'exportExtensions',
-            'exponentiationOperator',
-            'asyncGenerators',
-            'functionBind',
-            'functionSent'
-        ]
-    });
+            plugins: [
+                'jsx',
+                'flow',
+                'asyncFunctions',
+                'classConstructorCall',
+                'doExpressions',
+                'trailingFunctionCommas',
+                'objectRestSpread',
+                'decorators',
+                'classProperties',
+                'exportExtensions',
+                'exponentiationOperator',
+                'asyncGenerators',
+                'functionBind',
+                'functionSent'
+            ]
+
+        });
+    } catch (e) {
+        if (e instanceof SyntaxError) {
+            console.error("Syntax error in " + filename + " at " + e.loc.line + ':' + e.loc.column);
+            console.error(e.toString());
+        } else {
+            console.error("Unknown error while parsing " + filename);
+            console.error(e.toString());
+        }
+        process.exit(1);
+    }
 
 
     traverse(ast, GettextVisitor);
