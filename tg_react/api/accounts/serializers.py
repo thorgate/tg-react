@@ -65,7 +65,7 @@ class AuthenticationSerializer(serializers.Serializer):
 
             if user:
                 if not user.is_active:
-                    raise serializers.ValidationError('Your account has been disabled')
+                    raise serializers.ValidationError(_('Your account has been disabled'))
 
                 self.user = user
                 # hide the password so it wont leak
@@ -74,9 +74,9 @@ class AuthenticationSerializer(serializers.Serializer):
                 return credentials
 
             else:
-                raise serializers.ValidationError('Unable to login with provided credentials.')
+                raise serializers.ValidationError(_('Unable to login with provided credentials.'))
         else:
-            raise serializers.ValidationError('Enter both email and password')
+            raise serializers.ValidationError(_('Enter both email and password'))
 
     def create(self, validated_data):
         return validated_data
