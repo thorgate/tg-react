@@ -1,6 +1,5 @@
 import json
 import base64
-import phonenumbers
 
 from rest_framework import serializers
 from rest_framework.utils.field_mapping import ClassLookupDict
