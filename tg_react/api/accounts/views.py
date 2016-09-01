@@ -91,7 +91,7 @@ class AuthenticationView(APIView):
     serializer_class = AuthenticationSerializer
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.DATA)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             do_login(request, serializer.user)
 
@@ -115,7 +115,7 @@ class SetLanguageView(generics.RetrieveUpdateAPIView):
         return {'language_code': getattr(self.raw_request, '_lang', get_language_from_request(self.raw_request))}
 
     def update(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.DATA)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             setattr(self.raw_request, 'update_language_cookie', serializer.validated_data['language_code'])
             setattr(self.raw_request, '_lang', serializer.validated_data['language_code'])
@@ -142,7 +142,7 @@ class SignUpView(APIView):
     authentication_classes = (UnsafeSessionAuthentication, )
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.DATA, context={'request': request})
+        serializer = self.serializer_class(data=request.data, context={'request': request})
         if serializer.is_valid():
             data = serializer.validated_data.copy()
             password = data.pop('password', None)
@@ -192,7 +192,7 @@ class ForgotPassword(APIView):
         msg.send()
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.DATA)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             self.send_email_notification(serializer.user, serializer.validated_data['uid_and_token_b64'])
             return Response({'success': True})
@@ -217,7 +217,7 @@ class RestorePassword(APIView):
     permission_classes = (AllowAny, )
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.DATA)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             user = serializer.user
             user.set_password(serializer.validated_data['password'])
