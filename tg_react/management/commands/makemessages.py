@@ -2,8 +2,6 @@ import os
 import re
 import subprocess
 
-from optparse import make_option
-
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management.commands import makemessages
@@ -16,17 +14,10 @@ class Command(BaseCommand):
            'file containing gettext calls from it. Then runs ' \
            'the original makemessages command for all locales'
 
-    option_list = BaseCommand.option_list + (
-        make_option(
-            '-t', '--types', dest='file_types', default='\.jsx?$',
-        ),
-        make_option(
-            '-d', '--dir', dest='directory', default=','.join(get_static_dir()),
-        ),
-        make_option(
-            '-i', '--ignore', dest='ignore', default='bower_components,node_modules,build',
-        ),
-    )
+    def add_arguments(self, parser):
+        parser.add_argument('-t', '--types', dest='file_types', default='\.jsx?$')
+        parser.add_argument('-d', '--dir', dest='directory', default=','.join(get_static_dir()))
+        parser.add_argument('-i', '--ignore', dest='ignore', default='bower_components,node_modules,build')
 
     @staticmethod
     def has_dir(path, dirs):
@@ -96,6 +87,13 @@ class Command(BaseCommand):
             'ignore_patterns': [],
             'use_default_ignore_patterns': True,
             'domain': 'django',
+            'no_color': True,
+            'all': True,
+            'symlinks': True,
+            'no_wrap': False,
+            'no_location': False,
+            'no_obsolete': False,
+            'keep_pot': False,
             'extensions': ['html', 'txt', 'py'],
         }
 
