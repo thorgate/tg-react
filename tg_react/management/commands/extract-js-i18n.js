@@ -23,9 +23,19 @@ const GETTEXT_FUNCS = [
 function getNodeValue(node) {
     if (node.type === 'StringLiteral') {
         return node.value;
-    } else if (node.type === 'BinaryExpression' &&
-        node.left.type === 'StringLiteral' && node.right.type === 'StringLiteral') {
-        return getNodeValue(node.left) + getNodeValue(node.right);
+    } else if (node.type === 'BinaryExpression') {
+        if (node.left.type === 'StringLiteral' && node.right.type === 'StringLiteral') {
+            return getNodeValue(node.left) + getNodeValue(node.right);
+        } else {
+            let lNode = getNodeValue(node.left);
+            let rNode = getNodeValue(node.right);
+
+            if (lNode !== null && rNode !== null) {
+                return lNode + rNode;
+            } else {
+                return null;
+            }
+        }
     } else {
         return null;
     }
