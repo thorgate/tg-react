@@ -20,4 +20,4 @@ class MakeMessagesTest(TestCase):
     def test_command_fail(self):
         out = StringIO()
         with self.settings(SITE_ROOT=os.path.dirname(os.path.dirname(__file__)), LOCALE_PATHS='/tmp'):
-            call_command('makemessages', stdout=out)
+            call_command('react_makemessages', stdout=out)

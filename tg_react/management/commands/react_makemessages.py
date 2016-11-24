@@ -3,13 +3,13 @@ import re
 import subprocess
 
 from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import CommandError
 from django.core.management.commands import makemessages
 
 from ...settings import get_static_dir
 
 
-class Command(BaseCommand):
+class Command(makemessages.Command):
     help = 'Parses all js/jsx files and generates a python ' \
            'file containing gettext calls from it. Then runs ' \
            'the original makemessages command for all locales'
@@ -98,7 +98,7 @@ class Command(BaseCommand):
         }
 
         # Call makemessages
-        makemessages.Command().execute(**makemessages_opts)
+        super().handle(**makemessages_opts)
 
         self.stdout.write('')
         self.stdout.write('Executing original makemessages: Complete')
