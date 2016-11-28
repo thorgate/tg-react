@@ -2,8 +2,6 @@ import os
 import re
 import subprocess
 
-from optparse import make_option
-
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management.commands import makemessages
@@ -16,17 +14,28 @@ class Command(BaseCommand):
            'file containing gettext calls from it. Then runs ' \
            'the original makemessages command for all locales'
 
-    option_list = BaseCommand.option_list + (
-        make_option(
-            '-t', '--types', dest='file_types', default='\.jsx?$',
-        ),
-        make_option(
-            '-d', '--dir', dest='directory', default=','.join(get_static_dir()),
-        ),
-        make_option(
-            '-i', '--ignore', dest='ignore', default='bower_components,node_modules,build',
-        ),
-    )
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '-t',
+            '--types',
+            dest='file_types',
+            default='\.jsx?$',
+            help='Specify destination file types.'
+        )
+        parser.add_argument(
+            '-d',
+            '--dir',
+            dest='directory',
+            default=','.join(get_static_dir()),
+            help='Specify directory to perform action on.'
+        )
+        parser.add_argument(
+            '-i',
+            '--ignore',
+            dest='ignore',
+            default='bower_components,node_modules,build',
+            help='Specify components to ignore.'
+        )
 
     @staticmethod
     def has_dir(path, dirs):
