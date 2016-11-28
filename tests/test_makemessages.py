@@ -16,7 +16,7 @@ class MakeMessagesTest(TestCase):
             call_command('makemessages', stdout=out)
 
     @patch('subprocess.call', MagicMock(return_value=0))
-    @patch('django.core.management.commands.makemessages.Command.execute', MagicMock())
+    @patch('django.core.management.commands.makemessages.Command.build_potfiles', MagicMock(return_value=[]))
     def test_command_fail(self):
         out = StringIO()
         with self.settings(SITE_ROOT=os.path.dirname(os.path.dirname(__file__)), LOCALE_PATHS='/tmp'):
