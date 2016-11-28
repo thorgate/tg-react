@@ -77,29 +77,6 @@ class Command(BaseCommand):
 
         self.stdout.write('Generation complete')
         self.stdout.write('')
-        self.stdout.write('Executing original makemessages for all enabled locales')
-        self.stdout.write('')
-
-        makemessages_opts = {
-            'exclude': [],
-            'locale': list(dict(settings.LANGUAGES).keys()),
-            'verbosity': 1,
-            'ignore_patterns': [],
-            'use_default_ignore_patterns': True,
-            'domain': 'django',
-            'no_color': True,
-            'all': True,
-            'symlinks': True,
-            'no_wrap': False,
-            'no_location': False,
-            'no_obsolete': False,
-            'keep_pot': False,
-            'extensions': ['html', 'txt', 'py'],
-        }
-
-        # Call makemessages
-        makemessages.Command().execute(**makemessages_opts)
-
-        self.stdout.write('')
-        self.stdout.write('Executing original makemessages: Complete')
+        self.stdout.write('Temporary file generated')
+        self.stdout.write('Manually run makemessages to generate PO files')
         self.stdout.write('')
