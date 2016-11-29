@@ -55,7 +55,9 @@ def flatten_patterns(urlconf, base_path=None, namespace=None):
             result['%s%s' % (namespace, to_camelcase(url.name))] = url_result
 
         elif isinstance(url, RegexURLResolver):
-            flattened = flatten_patterns(url, base_path=base_path + (tokenize_pattern(url.regex) or ''), namespace=namespace + (url.namespace or ''))
+            flattened = flatten_patterns(url,
+                                         base_path=base_path + (tokenize_pattern(url.regex) or ''),
+                                         namespace=namespace + (url.namespace or ''))
 
             for key, value in flattened.items():
                 result[key] = value

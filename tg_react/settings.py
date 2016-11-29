@@ -72,7 +72,7 @@ def configure():
         raise ImproperlyConfigured("settings.TGR_PASSWORD_RECOVERY_URL must be str")
 
     try:
-        t = recovery_url % 'TEST'
+        recovery_url % 'TEST'
     except TypeError:
         raise ImproperlyConfigured(
             "settings.TGR_PASSWORD_RECOVERY_URL must contain a string "

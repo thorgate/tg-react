@@ -4,7 +4,6 @@ import subprocess
 
 from django.conf import settings
 from django.core.management.base import CommandError, BaseCommand
-from django.core.management.commands import makemessages
 
 from ...settings import get_static_dir
 

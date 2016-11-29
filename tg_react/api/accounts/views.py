@@ -9,9 +9,8 @@ from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _, get_language_from_request
 
-from .serializers import (
-        AuthenticationSerializer, UserDetailsSerializer, SignupSerializer, ForgotPasswordSerializer,
-        RecoveryPasswordSerializer, LanguageCodeSerializer)
+from .serializers import (AuthenticationSerializer, UserDetailsSerializer, SignupSerializer, ForgotPasswordSerializer,
+                          RecoveryPasswordSerializer, LanguageCodeSerializer)
 
 # for email notifications
 from django.template.loader import get_template
@@ -151,7 +150,7 @@ class SignUpView(APIView):
             user.set_password(password)
             user.save()
 
-            from django.contrib.auth import login, authenticate
+            from django.contrib.auth import authenticate
             user = authenticate(email=data['email'], password=password)
 
             do_login(request, user)

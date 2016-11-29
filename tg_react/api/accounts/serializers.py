@@ -154,11 +154,9 @@ class ForgotPasswordSerializer(serializers.Serializer):
 
     def validate(self, data):
         # Serialize uid and token to json then encode to base64
-        # Feauters:
-        # one parameter for api insted two (uid and token)
         uid_and_token = json.dumps({
-          'uid': self.user.pk,
-          'token': default_token_generator.make_token(self.user)
+            'uid': self.user.pk,
+            'token': default_token_generator.make_token(self.user)
         }).encode('utf-8')
         return {'uid_and_token_b64': base64.urlsafe_b64encode(uid_and_token).decode('ascii')}
 
@@ -208,7 +206,7 @@ class RecoveryPasswordSerializer(serializers.Serializer):
 
         # validate token
         if not default_token_generator.check_token(self.user, token):
-            msg = "%s %s" % (_("This password recovery link has expired or associated user does not exist."), 
+            msg = "%s %s" % (_("This password recovery link has expired or associated user does not exist."),
                              _("Use password recovery form to get new e-mail with new link."))
             raise serializers.ValidationError(msg)
 
