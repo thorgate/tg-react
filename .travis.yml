@@ -39,4 +39,4 @@ deploy:
     #           2017. See https://github.com/travis-ci/travis-ci/issues/929 for more info.
     tags: true
     distributions: sdist bdist_wheel
-    repo: thorgate/django-thorbanks
+    repo: thorgate/tg-react
