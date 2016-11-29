@@ -1,10 +1,8 @@
-# Config file for automatic testing at travis-ci.org
-
 language: python
 python:
-  - "3.5"
+- '3.5'
 install:
-  - pip install -r requirements-test.txt
+- pip install -r requirements-test.txt
 script:
 - tox
 env:
@@ -26,17 +24,14 @@ deploy:
   user: thorgate
   password:
     secure: >
-      bSTlfij4rUNYz3h0XZ0LcN4Rjclco/E3j32TnOCp8R/+x0PyQr1Mcbqcn48foFNd9EDSjhaPWG0O1GpfeV1RdwBfjnFqZk/9vcl898Y/5RTD7
-      qntHVSdyBQf4j8PxyrfFpcJyZLmvbOrkexIVGRNph9kL4+LUnsfy9vsR6j3nA1fKmpNUIxPJ8EUxK+FxSB43rCaYDdF2t5LlmhD27Drra0/Le
-      7N/DF5WeONa09iC8U9qrru7ksv+ARXKWpe6lDWhN0N+lEq+TsNmdD4C7KopcRuwy3Xlc+vpQfK7TqHxgCaPWMHg79huj0xxVWimMjuDnXoM/P
-      3bB7qpwO/i8moVGv+FIpk4Qc2Zh8fyUTbxK0kHLFfxntOLAqxuKmuKiXFC4p3kJYgG9f3XnNOX89WkygLAgboKgMUM/txU3CE9Zsmm4+TCg6b
-      KfsUNmp0bFFPEfqV2lPq5YdCjyJjF8wOx5N8/HOgCpfWQ442jbhqhmVuJwS4rZK3sYu5oOQVjJ1JGjV3LOltsFg9/t+iTiHT1/oQLGBuAXVfp
-      DInaj86ii/myxNJBIaycFSr4l41qmH/Bhca1UcJxQmeM7FWawoLF4/WCXEElJHeLl3hQxqdCCNsHWGbTczg4kmU4fFqPVZA4DT049uXFVCvfF
-      haqETlzR7xs/XIQh4NJ79Hg3KVpZU=
+      ZYx//RpAccD1ki2Kfee+cbNoti9qXYizifTTntlXFe/LeiFj95ubkPr+bXeeANDrtUYX131VYcXivjB7dTo+K4+LNAMUFRMfLJdgdnQAMvXgI
+      acyjmIzGD5N2unG+u0D1Aau4eAI/hK8pwf9ssAZE6IuRr4HQcUyxdAvtm7LMF9bR81OURB54BP/zQzimAQI8nF+AP//RmxTCtoZt0ZeuZa1Sk
+      2nHvfkJJwPXVZE+GqU0dh9lOtnO0RFuSBfgce68jk4oVbzSPr+Xs9od8fgBuOlXLIKyvrAfi93v3CQcmQ+0Jt6QptY2SyqpTwlsN2p4EoyiC8
+      aFbOEmOj6xxsfz3kkYEMZT0vH9yH3jDvGhzvUS9fiWNrnZBOz97V/RUm2S5QaEaX/EHiTvy3PZyVXzKvSN4RkRES5PrCMa0hM3pI8OWfZ0E9r
+      edCbJED/MgG3r1L6uyOcflvc/bSFQECHhICgnK2WKZL4WpBO7WS0Em3UKNB5aS6t9Ewhwl72bWNoPLyHZtI+IlMvyML5TcBk1SNx78MhFhKQJ
+      xHk6nVwIQPiovz4EZnxtv6KKVN3jIb6dbVvGOxDFDxxfkXlgowijODDM9s7ykKVCuVxeVuxoheqOmfKI8IiOlEOZjqSeaD4gNWrTGm9Ipqzba
+      wYAl272nHYh/Sv/cS5ff5PZbdVG1g=
   on:
-    # Warning: With this config, the package is released on pypi after the first matrix job succeeeds. This is currently fine
-    #           since we shouldn't create tags before a successful build. Travis plans to add after_success callback in Q1/Q2 of
-    #           2017. See https://github.com/travis-ci/travis-ci/issues/929 for more info.
     tags: true
     distributions: sdist bdist_wheel
     repo: thorgate/tg-react
