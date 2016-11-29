@@ -9,11 +9,14 @@ except ImportError:
     from django.utils.module_loading import import_by_path as import_string
 
 
+def ucfirst(word):
+    return word[0].upper() + word[1:].lower()
+
+
 def to_camelcase(value):
     value = value.replace(' ', '_').replace('-', '_').lower()
 
-    ufirst = lambda word: word[0].upper() + word[1:].lower()
-    return "".join([ufirst(x) if i > 0 else x for i, x in enumerate(value.split('_'))])
+    return "".join([ucfirst(x) if i > 0 else x for i, x in enumerate(value.split('_'))])
 
 
 def tokenize_pattern(regex):
