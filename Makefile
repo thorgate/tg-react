@@ -36,7 +36,6 @@ coverage:
 	coverage run --source tg_react runtests.py tests
 	coverage report -m
 	coverage html
-	open htmlcov/index.html
 
 docs:
 	rm -f docs/tg-react.rst
