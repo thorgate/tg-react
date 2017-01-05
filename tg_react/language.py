@@ -1,9 +1,11 @@
+import itertools
 import json
 import logging
 import os
 import re
-
+import six
 import django
+
 from django.utils import timezone, _os, translation
 from django.utils.encoding import force_str
 
@@ -61,9 +63,6 @@ def make_header(locale):
 def collect_translations():
     languages = {}
     locale_data = {}
-    import itertools
-    import six
-
     js_messages = get_messages()
 
     for language_code, label in settings.LANGUAGES:
@@ -82,6 +81,9 @@ def collect_translations():
             trans_fallback_cat = trans._fallback._catalog if trans._fallback else {}
 
             for key, value in itertools.chain(six.iteritems(trans_cat), six.iteritems(trans_fallback_cat)):
+                # We only need to add string once into locale_data, this is why we check if key or msgid already
+                # exists in the locale_data. Not doing this may result in incorrect translation strings from other
+                # languages overwriting the correct ones.
                 if isinstance(key, six.string_types):
                     if key not in js_messages.keys() or key in locale_data[language_code]:
                         continue
@@ -92,6 +94,8 @@ def collect_translations():
                         continue
                     cnt = key[1]
                     maxcnts[msgid] = max(cnt, maxcnts.get(msgid, 0))
+                    # In case of plurals the previously described logic does not work. Then we need to
+                    # check if plural form already exists in translations.
                     if msgid not in pdict:
                         pdict.setdefault(msgid, {})[cnt] = value
                     elif cnt not in pdict[msgid]:
