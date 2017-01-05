@@ -1,10 +1,14 @@
 language: python
+
 python:
 - '3.5'
+
 install:
 - pip install -r requirements-test.txt
+
 script:
 - tox
+
 env:
   matrix:
   - TOXENV=py27-django18
@@ -18,7 +22,9 @@ env:
   - TOXENV=py35-django110
   - TOXENV=flake8
   - TOXENV=coverage
+
 after_success: coveralls
+
 deploy:
   provider: pypi
   user: thorgate
@@ -38,3 +44,6 @@ deploy:
     tags: true
     distributions: sdist bdist_wheel
     repo: thorgate/tg-react
+
+notifications:
+    email: false
