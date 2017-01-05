@@ -1,9 +1,11 @@
+import itertools
 import json
 import logging
 import os
 import re
-
+import six
 import django
+
 from django.utils import timezone, _os, translation
 from django.utils.encoding import force_str
 
@@ -61,6 +63,7 @@ def make_header(locale):
 def collect_translations():
     languages = {}
     locale_data = {}
+    js_messages = get_messages()
 
     for language_code, label in settings.LANGUAGES:
         languages[language_code] = '%s' % label
@@ -70,9 +73,38 @@ def collect_translations():
         locale_data[language_code][""] = make_header(language_code)
 
         with translation.override(language_code):
-            # Add the messages
-            for key, message in get_messages().items():
-                locale_data[language_code][key] = message
+            # Next code is largely taken from Django 1.10 djangojs logic @ django.views.i18n get_javascript_catalog
+            pdict = {}
+            maxcnts = {}
+            trans = translation._trans.catalog()
+            trans_cat = trans._catalog
+            trans_fallback_cat = trans._fallback._catalog if trans._fallback else {}
+
+            for key, value in itertools.chain(six.iteritems(trans_cat), six.iteritems(trans_fallback_cat)):
+                # We only need to add string once into locale_data, this is why we check if key or msgid already
+                # exists in the locale_data. Not doing this may result in incorrect translation strings from other
+                # languages overwriting the correct ones.
+                if isinstance(key, six.string_types):
+                    if key not in js_messages.keys() or key in locale_data[language_code]:
+                        continue
+                    locale_data[language_code][key] = [value]
+                elif isinstance(key, tuple):
+                    msgid = key[0]
+                    if msgid not in js_messages.keys():
+                        continue
+                    cnt = key[1]
+                    maxcnts[msgid] = max(cnt, maxcnts.get(msgid, 0))
+                    # In case of plurals the previously described logic does not work. Then we need to
+                    # check if plural form already exists in translations.
+                    if msgid not in pdict:
+                        pdict.setdefault(msgid, {})[cnt] = value
+                    elif cnt not in pdict[msgid]:
+                        pdict.setdefault(msgid, {})[cnt] = value
+                else:
+                    raise TypeError(key)
+
+            for k, v in pdict.items():
+                locale_data[language_code][k] = [v.get(i, '') for i in range(maxcnts[k] + 1)]
 
     for key, value in locale_data.items():
         locale_data[key] = json.dumps(value)
