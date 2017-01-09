@@ -30,13 +30,13 @@ deploy:
   user: thorgate
   password:
     secure: >
-      ZYx//RpAccD1ki2Kfee+cbNoti9qXYizifTTntlXFe/LeiFj95ubkPr+bXeeANDrtUYX131VYcXivjB7dTo+K4+LNAMUFRMfLJdgdnQAMvXgI
-      acyjmIzGD5N2unG+u0D1Aau4eAI/hK8pwf9ssAZE6IuRr4HQcUyxdAvtm7LMF9bR81OURB54BP/zQzimAQI8nF+AP//RmxTCtoZt0ZeuZa1Sk
-      2nHvfkJJwPXVZE+GqU0dh9lOtnO0RFuSBfgce68jk4oVbzSPr+Xs9od8fgBuOlXLIKyvrAfi93v3CQcmQ+0Jt6QptY2SyqpTwlsN2p4EoyiC8
-      aFbOEmOj6xxsfz3kkYEMZT0vH9yH3jDvGhzvUS9fiWNrnZBOz97V/RUm2S5QaEaX/EHiTvy3PZyVXzKvSN4RkRES5PrCMa0hM3pI8OWfZ0E9r
-      edCbJED/MgG3r1L6uyOcflvc/bSFQECHhICgnK2WKZL4WpBO7WS0Em3UKNB5aS6t9Ewhwl72bWNoPLyHZtI+IlMvyML5TcBk1SNx78MhFhKQJ
-      xHk6nVwIQPiovz4EZnxtv6KKVN3jIb6dbVvGOxDFDxxfkXlgowijODDM9s7ykKVCuVxeVuxoheqOmfKI8IiOlEOZjqSeaD4gNWrTGm9Ipqzba
-      wYAl272nHYh/Sv/cS5ff5PZbdVG1g=
+      ed+XJteAdeeS8DmnACV3UKSu/s/qMv6u6xPITGKQomkAhxuJFo3m8LRjm3lMnJI1NN8EIuYCiMjHPEEXXwqi8+uGwUzPNpqYwBjrK8v6TVUxY
+      tNLIwTzhwRu+pt/V3BxnhyqTEwF0NAi+diIqeQVsVPl8lHrQRye+y4Sco33VKGtJi5+8qgdYnbh5xA5QeZmDSkT/n1mJE9C9p0O6Dlgco2kwC
+      MI/YoCSM3y3jKH53ZMdYHf6FOWgMYoyaNjUEc2jGJyfp61X3+JQJhg8jxSFHNl06vzp+Eyei90RMMM/QccBSXUMSdAdXBXoDnmoQ7PGV8OUU5
+      H4r9TCbwpP4UzyxboyE2MK9+XyyIPiP9Cj0z78oIBfYSINiOoEOwaSAgU8P49ok3Ba7oIKBWXeI13rgo2JSkWPTdhhHESmeVIeX30HoyY41u3
+      eC3nPzsDIUdBzcgMK1bZ+4WgiEjsKpER7SPgpvxULBPHtaNZlnovRVD+QiYWnmxHbqnpLrgMCT3NRJsoWm9AZErHkRKzu3213kaDf1k7ivDad
+      r7iZnEoDEj8Vjp1qQF0rnbu8/eFKh5XG/myNIihrfpy89A9Mp0mAuhaRweJyz3eGoio856o+3fF+bpUzi4qVN4vYRlryt+3nb0K5qamT60Zvk
+      bP8SL3hRUQy0ifWFZW7q8tGSBcM+w=
   on:
     # Warning: With this config, the package is released on pypi after the first matrix job succeeeds. This is currently fine
     #           since we shouldn't create tags before a successful build. Travis plans to add after_success callback in Q1/Q2 of
