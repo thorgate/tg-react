@@ -9,7 +9,7 @@ import django
 from django.utils import timezone, _os, translation
 from django.utils.encoding import force_str
 
-from tg_react import settings
+from django.conf import settings
 
 
 def get_plural_forms(locale):
