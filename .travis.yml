@@ -42,9 +42,6 @@ jobs:
             r7iZnEoDEj8Vjp1qQF0rnbu8/eFKh5XG/myNIihrfpy89A9Mp0mAuhaRweJyz3eGoio856o+3fF+bpUzi4qVN4vYRlryt+3nb0K5qamT60Zvk
             bP8SL3hRUQy0ifWFZW7q8tGSBcM+w=
         on:
-          # Warning: With this config, the package is released on pypi after the first matrix job succeeeds. This is currently fine
-          #           since we shouldn't create tags before a successful build. Travis plans to add after_success callback in Q1/Q2 of
-          #           2017. See https://github.com/travis-ci/travis-ci/issues/929 for more info.
           tags: true
           distributions: sdist bdist_wheel
           repo: thorgate/tg-react
