@@ -1,0 +1,45 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Example v0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-01 11:15+0000\n"
+"PO-Revision-Date: 2017-09-30 12:00+0000\n"
+"Last-Translator: Automatic <hi@thorgate.eu>\n"
+"Language-Team: Automatic <hi@thorgate.eu>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: dummy_test.js:1 dummy_test.js:15
+msgid "Dummy test string"
+msgstr "EN: Dummy test string"
+
+#: dummy_test.js:2
+msgid "Dummy test string Dummy test string"
+msgstr "EN: Dummy test string Dummy test string"
+
+#: dummy_test.js:4
+msgctxt "test"
+msgid "Dummy test string"
+msgstr "EN: Dummy test string"
+
+#: dummy_test.js:7
+#, javascript-format
+msgid "There is %s more waybill"
+msgid_plural "There are %s more waybills"
+msgstr[0] "EN: There is %s more waybill"
+msgstr[1] "EN: There are %s more waybills"
+
+#: dummy_test.js:10
+msgctxt "list"
+msgid "There is %(waybillCount)s more waybill"
+msgid_plural "There are %(waybillCount)s more waybills"
+msgstr[0] "EN: There is %(waybillCount)s more waybill"
+msgstr[1] "EN: There are %(waybillCount)s more waybills"

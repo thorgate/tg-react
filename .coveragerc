@@ -1,0 +1,12 @@
+[run]
+branch = True
+source =
+    tg_react/
+
+omit =
+    */migrations/*
+    setup.py
+    example
+
+[html]
+directory = htmlcov
