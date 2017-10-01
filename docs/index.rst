@@ -6,14 +6,14 @@
 Welcome to tg-react's documentation!
 =================================================================
 
+Helpers for react based applications running on django.
+
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
-   readme
-   installation
-   usage
+   getting_started
+   tips
    contributing
-   authors
-   history
+   modules

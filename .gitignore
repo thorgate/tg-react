@@ -29,8 +29,8 @@ pip-log.txt
 nosetests.xml
 htmlcov/
 
-# Translations
-*.mo
+# Translations for tests
+example/**/*.mo
 
 # Mr Developer
 .mr.developer.cfg

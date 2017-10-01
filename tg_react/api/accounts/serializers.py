@@ -30,7 +30,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 
     def validate_email(self, data):
         if get_user_model().objects.filter(email=data).exists() and self.instance.email != data:
-            raise serializers.ValidationError(_("User with this e-mail address already exists"))
+            raise serializers.ValidationError(_("User with this e-mail address already exists."))
 
         return data
 
@@ -64,7 +64,7 @@ class AuthenticationSerializer(serializers.Serializer):
 
             if user:
                 if not user.is_active:
-                    raise serializers.ValidationError(_('Your account has been disabled'))
+                    raise serializers.ValidationError(_('Your account has been disabled.'))
 
                 self.user = user
                 # hide the password so it wont leak
@@ -75,7 +75,7 @@ class AuthenticationSerializer(serializers.Serializer):
             else:
                 raise serializers.ValidationError(_('Unable to login with provided credentials.'))
         else:
-            raise serializers.ValidationError(_('Enter both email and password'))
+            raise serializers.ValidationError(_('Please enter both email and password.'))
 
     def create(self, validated_data):
         return validated_data
@@ -92,7 +92,7 @@ def phonenumber_validation(data):
     if not phone_number:
         return data
     elif not phone_number.country_code:
-        raise serializers.ValidationError(_("Phone number needs to include valid country code (E.g +37255555555)"))
+        raise serializers.ValidationError(_("Phone number needs to include valid country code (E.g +37255555555)."))
     elif not phone_number.is_valid():
         raise serializers.ValidationError(_('The phone number entered is not valid.'))
 
@@ -129,7 +129,7 @@ class SignupSerializer(serializers.Serializer):
 
     def validate_email(self, data):
         if get_user_model().objects.filter(email=data).exists():
-            raise serializers.ValidationError(_("User with this e-mail address already exists"))
+            raise serializers.ValidationError(_("User with this e-mail address already exists."))
 
         return data
 
@@ -148,7 +148,7 @@ class ForgotPasswordSerializer(serializers.Serializer):
         try:
             self.user = user_model.objects.get(email=email)
         except user_model.DoesNotExist:
-            raise serializers.ValidationError(_("We do not have user with given e-mail address in our system"))
+            raise serializers.ValidationError(_("We do not have user with given e-mail address in our system."))
 
         return email
 
@@ -183,7 +183,7 @@ class RecoveryPasswordSerializer(serializers.Serializer):
     def validate_uid_and_token_b64(self, uid_and_token_b64):
 
         try:
-            # Deserealize data from json
+            # Deserialize data from json
             json_data = base64.urlsafe_b64decode(uid_and_token_b64).decode('utf-8')
             data = json.loads(json_data)
         except:

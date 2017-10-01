@@ -30,3 +30,11 @@ Features
 --------
 
 * TODO
+
+.. TODO: List features and link to documentation for more information
+
+
+Changelog
+---------
+
+Changes are documented under `Github Releases <https://github.com/thorgate/tg-react/releases>`_.
