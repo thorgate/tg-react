@@ -17,3 +17,4 @@ Contents:
    tips
    contributing
    modules
+   changelog
