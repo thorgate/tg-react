@@ -1,4 +1,4 @@
-.PHONY: clean-pyc clean-build docs
+.PHONY: clean-pyc clean-build docs lint coverage
 
 help:
 	@echo "clean-build - remove build artifacts"
@@ -27,15 +27,16 @@ lint:
 	flake8 tg_react tests
 
 test:
-	python runtests.py tests
+	cd example && ./manage.py compilemessages
+	py.test -n auto
 
 test-all:
 	tox
 
+test-full: test lint coverage
+
 coverage:
-	coverage run --source tg_react runtests.py tests
-	coverage report -m
-	coverage html
+	py.test --cov-config .coveragerc --cov=tg_react --cov-report html --cov-report term-missing
 
 docs:
 	rm -f docs/tg-react.rst
