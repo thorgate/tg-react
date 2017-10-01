@@ -15,13 +15,12 @@ except ImportError:
 version = tg_react.__version__
 
 readme = open('README.rst').read()
-history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='tg-react',
     version=version,
     description="""Helpers for react based applications running on django.""",
-    long_description=readme + '\n\n' + history,
+    long_description=readme,
     author='Thorgate',
     author_email='jyrno@thorgate.eu',
     url='https://github.com/thorgate/tg-react',

@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'tg-react'
-copyright = u'2015, Thorgate'
+copyright = u'2015-present, Thorgate'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -252,3 +252,8 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+# Configure django
+import django
+os.environ['DJANGO_SETTINGS_MODULE'] = 'example.settings'
+django.setup()

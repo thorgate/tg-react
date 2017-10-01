@@ -1,0 +1,4 @@
+-r requirements.txt
+
+sphinx==1.6.4
+djangorestframework==3.6.4
