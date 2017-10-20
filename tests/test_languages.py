@@ -36,11 +36,11 @@ class LanguagesTestCase(unittest.TestCase):
         })
 
         language_key = language.upper()
-        self.assertEqual(locale_data.get('Dummy test string'), '%s: Dummy test string' % language_key)
-        self.assertEqual(locale_data.get('test\x04Dummy test string'), '%s: Dummy test string' % language_key)
+        self.assertEqual(locale_data.get('Dummy test string'), ['%s: Dummy test string' % language_key])
+        self.assertEqual(locale_data.get('test\x04Dummy test string'), ['%s: Dummy test string' % language_key])
         self.assertEqual(
             locale_data.get('Dummy test string Dummy test string'),
-            '%s: Dummy test string Dummy test string' % language_key
+            ['%s: Dummy test string Dummy test string' % language_key],
         )
         self.assertEqual(
             locale_data.get('There is %s more waybill'), [

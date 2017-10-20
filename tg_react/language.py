@@ -126,7 +126,7 @@ class DjangoLocaleData(object):
                     continue
 
                 if isinstance(key, six.string_types):
-                    locale_data[language_code][key] = value
+                    locale_data[language_code][key] = [value]
 
                 elif isinstance(key, tuple):
                     msgid, cnt = key
