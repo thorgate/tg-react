@@ -35,7 +35,7 @@ class DjangoLocaleData(object):
 
                 trans_cat = translation_engine._catalog
                 trans_fallback_cat = translation_engine._fallback._catalog if translation_engine._fallback else {}
-            except:
+            except Exception:
                 trans_cat = get_catalogue_legacy(self.domain, locale, self.packages)
                 trans_fallback_cat = get_catalogue_legacy(self.domain, settings.LANGUAGE_CODE, self.packages)
 

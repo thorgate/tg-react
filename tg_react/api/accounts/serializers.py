@@ -186,7 +186,7 @@ class RecoveryPasswordSerializer(serializers.Serializer):
             # Deserialize data from json
             json_data = base64.urlsafe_b64decode(uid_and_token_b64).decode('utf-8')
             data = json.loads(json_data)
-        except:
+        except Exception:
             raise serializers.ValidationError(_("Broken data."))
 
         uid = data.get('uid', None)
