@@ -1,8 +1,10 @@
 from django.conf import settings
+from django.utils.decorators import method_decorator
 from django.utils.module_loading import import_string
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import generics, status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -63,10 +65,18 @@ class UnsafeSessionAuthentication(SessionAuthentication):
 class UserDetails(generics.RetrieveUpdateAPIView):
     serializer_class = UserDetailsSerializer
     authentication_classes = (SessionAuthentication, )
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_object(self):
         return self.request.user
+
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request, *args, **kwargs):
+        user = self.get_object()
+        if user.is_authenticated:
+            return super().get(request, *args, **kwargs)
+
+        return Response({'authenticated': False})
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)

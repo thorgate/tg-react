@@ -6,7 +6,7 @@ from tg_react.language import DjangoLocaleData
 
 class LanguagesTestCase(unittest.TestCase):
 
-    def assertForLanguage(self, language, plural_form=None, packages=None):
+    def assertForLanguage(self, language, plural_form=None, num_plurals=2, packages=None):
         locale_data_generator = DjangoLocaleData(packages=packages)
         languages, languages_data = locale_data_generator.collect_translations()
 
@@ -42,29 +42,29 @@ class LanguagesTestCase(unittest.TestCase):
             locale_data.get('Dummy test string Dummy test string'),
             ['%s: Dummy test string Dummy test string' % language_key],
         )
-        self.assertEqual(
-            locale_data.get('There is %s more waybill'), [
-                '%s: There is %%s more waybill' % language_key, '%s: There are %%s more waybills' % language_key
-            ]
-        )
-        self.assertEqual(
-            locale_data.get('list\x04There is %(waybillCount)s more waybill'), [
-                '%s: There is %%(waybillCount)s more waybill' % language_key,
-                '%s: There are %%(waybillCount)s more waybills' % language_key,
-            ]
-        )
+
+        expected = ['%s: There is %%s more waybill' % language_key] + (num_plurals - 1) * [
+            '%s: There are %%s more waybills' % language_key
+        ]
+        self.assertEqual(locale_data.get('There is %s more waybill'), expected)
+        expected = ['%s: There is %%(waybillCount)s more waybill' % language_key] + (num_plurals - 1) * [
+            '%s: There are %%(waybillCount)s more waybills' % language_key
+        ]
+        self.assertEqual(locale_data.get('list\x04There is %(waybillCount)s more waybill'), expected)
 
     def test_for_english(self):
         self.assertForLanguage('en')
 
     def test_for_estonian(self):
-        self.assertForLanguage('et', plural_form='(n != 1)')
+        self.assertForLanguage('et', plural_form='nplurals=2; plural=(n != 1);')
 
     def test_for_russian(self):
         self.assertForLanguage(
             'ru',
-            plural_form='(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 '
-            '|| n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3)',
+            plural_form='nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n'
+            '%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n'
+            '%100>=11 && n%100<=14)? 2 : 3);',
+            num_plurals=4,
         )
 
     def test_with_package_define(self):
