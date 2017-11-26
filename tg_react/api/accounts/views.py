@@ -76,7 +76,7 @@ class UserDetails(generics.RetrieveUpdateAPIView):
         if user.is_authenticated:
             return super().get(request, *args, **kwargs)
 
-        return Response({'authenticated': False})
+        return Response({'authenticated': False}, status=status.HTTP_401_UNAUTHORIZED)
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
