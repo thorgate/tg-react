@@ -1,6 +1,9 @@
 from __future__ import unicode_literals
 
-from django.conf.urls import include, url
+try:
+    from django.urls import re_path as url
+except ImportError:
+    from django.conf.urls import url
 
 from django.contrib import admin
 
@@ -12,6 +15,6 @@ def test_view(request):
 
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^test/', test_view, name='test_view'),
 ]
