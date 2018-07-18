@@ -16,7 +16,6 @@ from .serializers import (AuthenticationSerializer, UserDetailsSerializer, Signu
 
 # for email notifications
 from django.template.loader import get_template
-from django.template import Context
 
 from tg_react.settings import get_password_recovery_url, get_post_login_handler, get_post_logout_handler
 
@@ -192,7 +191,7 @@ class ForgotPassword(APIView):
         confirm_reset_url = settings.SITE_URL + path
 
         subject = _("Password restore")
-        context = Context({'user': user, 'confirm_reset_url': confirm_reset_url})
+        context = {'user': user, 'confirm_reset_url': confirm_reset_url}
         text_content = get_template('emails/password_reset.txt').render(context)
         html_content = get_template('emails/password_reset.html').render(context)
 
