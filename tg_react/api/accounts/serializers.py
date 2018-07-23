@@ -9,7 +9,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.translation import ugettext as _
 
-from tg_react.settings import exclude_fields_from_user_details, get_user_signup_fields, user_extra_fields
+from tg_react.settings import exclude_fields_from_user_details, get_user_signup_fields, user_extra_fields, \
+    get_email_case_sensitive
 
 
 class UserDetailsSerializer(serializers.ModelSerializer):
@@ -29,7 +30,13 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         }
 
     def validate_email(self, data):
-        if get_user_model().objects.filter(email=data).exists() and self.instance.email != data:
+        current_email = self.instance.email
+
+        if not get_email_case_sensitive():
+            data = data.lower()
+            current_email = current_email.lower()
+
+        if get_user_model().objects.filter(email=data).exists() and current_email != data:
             raise serializers.ValidationError(_("User with this e-mail address already exists."))
 
         return data
@@ -60,6 +67,10 @@ class AuthenticationSerializer(serializers.Serializer):
 
         if all(credentials.values()):
             from django.contrib.auth import authenticate
+
+            if not get_email_case_sensitive():
+                credentials['email'] = credentials['email'].lower()
+
             user = authenticate(**credentials)
 
             if user:
@@ -128,6 +139,9 @@ class SignupSerializer(serializers.Serializer):
                 self._declared_fields[model_field.name] = mapping[model_field](**field_kwargs)
 
     def validate_email(self, data):
+        if not get_email_case_sensitive():
+            data = data.lower()
+
         if get_user_model().objects.filter(email=data).exists():
             raise serializers.ValidationError(_("User with this e-mail address already exists."))
 
@@ -144,6 +158,9 @@ class ForgotPasswordSerializer(serializers.Serializer):
 
     def validate_email(self, email):
         user_model = get_user_model()
+
+        if not get_email_case_sensitive():
+            email = email.lower()
 
         try:
             self.user = user_model.objects.get(email=email)

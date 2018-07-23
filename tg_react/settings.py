@@ -12,6 +12,14 @@ def get_user_signup_fields():
     return getattr(settings, 'TGR_USER_SIGNUP_FIELDS', ['name', ])
 
 
+def get_signup_skipped_fields():
+    return getattr(settings, 'TGR_USER_SIGNUP_SKIPPED_FIELDS', [])
+
+
+def get_email_case_sensitive():
+    return getattr(settings, 'TGR_EMAIL_CASE_SENSITIVE', True)  # True by default to maintain compatibility
+
+
 def exclude_fields_from_user_details():
     return getattr(settings, 'TGR_EXCLUDED_USER_FIELDS', [])
 

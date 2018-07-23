@@ -18,7 +18,8 @@ from .serializers import (AuthenticationSerializer, UserDetailsSerializer, Signu
 from django.template.loader import get_template
 from django.template import Context
 
-from tg_react.settings import get_password_recovery_url, get_post_login_handler, get_post_logout_handler
+from tg_react.settings import get_password_recovery_url, get_post_login_handler, get_post_logout_handler, \
+    get_signup_skipped_fields
 
 
 def do_login(request, user):
@@ -155,6 +156,9 @@ class SignUpView(APIView):
         if serializer.is_valid():
             data = serializer.validated_data.copy()
             password = data.pop('password', None)
+
+            for skipped_field in get_signup_skipped_fields():
+                data.pop(skipped_field, None)
 
             user = get_user_model()(**data)
             user.set_password(password)
