@@ -10,8 +10,6 @@ from django.conf import settings
 from django.utils import translation
 from django.utils.translation.trans_real import DjangoTranslation
 
-from tg_react.catalogue_legacy import get_catalogue_legacy
-
 
 class DjangoLocaleData(object):
     languages = settings.LANGUAGES
@@ -30,14 +28,10 @@ class DjangoLocaleData(object):
     def get_catalog(self, locale):
         """Create Django translation catalogue for `locale`."""
         with translation.override(locale):
-            try:
-                translation_engine = DjangoTranslation(locale, domain=self.domain, localedirs=self.paths)
+            translation_engine = DjangoTranslation(locale, domain=self.domain, localedirs=self.paths)
 
-                trans_cat = translation_engine._catalog
-                trans_fallback_cat = translation_engine._fallback._catalog if translation_engine._fallback else {}
-            except Exception:
-                trans_cat = get_catalogue_legacy(self.domain, locale, self.packages)
-                trans_fallback_cat = get_catalogue_legacy(self.domain, settings.LANGUAGE_CODE, self.packages)
+            trans_cat = translation_engine._catalog
+            trans_fallback_cat = translation_engine._fallback._catalog if translation_engine._fallback else {}
 
             return trans_cat, trans_fallback_cat
 

@@ -1,14 +1,14 @@
 from __future__ import unicode_literals
 
-from django.core.exceptions import ImproperlyConfigured
-from django.core.urlresolvers import RegexURLPattern, RegexURLResolver
 import re
 
-try:
-    from django.utils.module_loading import import_string
+from django.core.exceptions import ImproperlyConfigured
+from django.utils.module_loading import import_string
 
+try:
+    from django.urls import URLPattern as RegexURLPattern, URLResolver as RegexURLResolver
 except ImportError:
-    from django.utils.module_loading import import_by_path as import_string
+    from django.core.urlresolvers import RegexURLPattern, RegexURLResolver  # Removed in Django 2.0
 
 
 def ucfirst(word):
@@ -19,6 +19,16 @@ def to_camelcase(value):
     value = value.replace(' ', '_').replace('-', '_').lower()
 
     return "".join([ucfirst(x) if i > 0 else x for i, x in enumerate(value.split('_'))])
+
+
+def get_url_regex_pattern(urlpattern):
+    if hasattr(urlpattern, 'pattern'):
+        # Django 2.0
+        return urlpattern.pattern.regex
+
+    else:
+        # Django < 2.0
+        return urlpattern.regex
 
 
 def tokenize_pattern(regex):
@@ -36,7 +46,7 @@ def tokenize_pattern(regex):
     for key, idx in regex.groupindex.items():
         pattern_str = re.sub(r"(\(\?P<%s>)[^\)]+\)" % key, "${%s}" % key, pattern_str)
 
-    return pattern_str.lstrip('^').rstrip('$')
+    return pattern_str.replace('\\/', '/').replace('\\/', '/').lstrip('^').rstrip('$')
 
 
 def flatten_patterns(urlconf, base_path=None, namespace=None):
@@ -53,18 +63,23 @@ def flatten_patterns(urlconf, base_path=None, namespace=None):
         urlconf = urlconf.url_patterns
 
     for url in urlconf:
+        url_regex = None
+
+        if isinstance(url, (RegexURLPattern, RegexURLResolver)):
+            url_regex = get_url_regex_pattern(url)
+
         if isinstance(url, RegexURLPattern):
             if url.name == 'api-noop' or not url.name:
                 continue
 
-            url_result = '%s%s' % (base_path, tokenize_pattern(url.regex))
+            url_result = '%s%s' % (base_path, tokenize_pattern(url_regex))
 
             result['%s%s' % (namespace, to_camelcase(url.name))] = url_result
 
         elif isinstance(url, RegexURLResolver):
             flattened = flatten_patterns(
                 url,
-                base_path=base_path + (tokenize_pattern(url.regex) or ''),
+                base_path=base_path + (tokenize_pattern(url_regex) or ''),
                 namespace=namespace + (url.namespace or '')
             )
 

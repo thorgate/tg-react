@@ -1,3 +1,3 @@
-__version__ = '2.0.0a3'
+__version__ = '2.0.0'
 
 default_app_config = 'tg_react.apps.TgReactConfig'
