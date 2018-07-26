@@ -8,8 +8,21 @@ except ImportError:
     from django.utils.module_loading import import_by_path as import_string
 
 
+# fields unconditionally excluded from user signup data
+USER_SIGNUP_SKIPPED_FIELDS = {'id', 'is_staff', 'is_superuser', 'is_active', 'date_joined', 'last_login'}
+
+
 def get_user_signup_fields():
     return getattr(settings, 'TGR_USER_SIGNUP_FIELDS', ['name', ])
+
+
+def get_signup_skipped_fields():
+    fields = getattr(settings, 'TGR_USER_SIGNUP_SKIPPED_FIELDS', [])
+    return USER_SIGNUP_SKIPPED_FIELDS.union(fields)
+
+
+def get_email_case_sensitive():
+    return getattr(settings, 'TGR_EMAIL_CASE_SENSITIVE', True)  # True by default to maintain compatibility
 
 
 def exclude_fields_from_user_details():
