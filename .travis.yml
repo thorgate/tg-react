@@ -1,3 +1,6 @@
+dist: trusty
+sudo: false
+
 language: python
 
 python: "3.6"
@@ -8,24 +11,28 @@ install:
 script:
 - tox
 
-matrix:
+jobs:
   include:
     - python: "3.5"
       env: TOXENV=py35-django110
+
     - python: "3.5"
       env: TOXENV=py35-django111
+
+    - python: "3.5"
+      env: TOXENV=py35-django200
+
     - python: "3.6"
       env: TOXENV=py36-django110
+
     - python: "3.6"
       env: TOXENV=py36-django111
 
-after_success:
-  - test $TOXENV = "py36-django111" && coveralls
+    - python: "3.6"
+      env: TOXENV=py36-django200
 
-jobs:
-  include:
     - stage: deploy
-      env: TOXENV=py36-django111
+      env: TOXENV=py36-django200
       deploy:
         provider: pypi
         user: thorgate
@@ -42,6 +49,9 @@ jobs:
           tags: true
           distributions: sdist bdist_wheel
           repo: thorgate/tg-react
+
+after_success:
+  - test $TOXENV = "py36-django200" && coveralls
 
 notifications:
     email: false
