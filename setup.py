@@ -29,6 +29,7 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
+        'django>=1.8,!=2.1.0,!=2.1.1,!=2.1.2,!=2.1.3,!=2.1.4,!=2.1.5,<3.0',
     ],
     license="BSD",
     zip_safe=False,
@@ -43,5 +44,6 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
 )
