@@ -47,6 +47,7 @@ deploy:
     tags: true
     distributions: sdist bdist_wheel
     repo: thorgate/tg-react
+    python: "3.6"
     condition: "$DJANGO = 2.2"
 
 notifications:
