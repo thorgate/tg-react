@@ -44,7 +44,7 @@ class FlattenUrlsTestCase(unittest.TestCase):
                 'admin::authUserChange': 'admin/auth/user/${arg0}/',
             })
 
-        if LooseVersion(django.get_version()) == LooseVersion("2.0"):
+        if LooseVersion(django.get_version()) >= LooseVersion("2.0"):
             expected_urls_dict.update({
                 'admin::authGroupAutocomplete': 'admin/auth/group/autocomplete/',
                 'admin::authGroupChange': 'admin/auth/group/${object_id}/change/',
@@ -57,7 +57,7 @@ class FlattenUrlsTestCase(unittest.TestCase):
                 'admin::authUserPasswordChange': 'admin/auth/user/${id}/password/',
             })
 
-        self.assertEqual(flatten_urls('example.urls', None), expected_urls_dict)
+        self.assertEqual(expected_urls_dict, flatten_urls('example.urls', None))
 
     def test_url_flatten_invalid_conf(self):
         with self.assertRaises(ImproperlyConfigured):
