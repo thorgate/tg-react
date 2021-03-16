@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tg-react"
-version = "2.1.0"
+version = "3.0.0b0"
 description = "Helpers for react based applications running on django."
 authors = ["Thorgate <jyrno@thorgate.eu>"]
 license = "BSD"
