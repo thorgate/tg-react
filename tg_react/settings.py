@@ -13,8 +13,6 @@ USER_SIGNUP_SKIPPED_FIELDS = {
     "last_login",
 }
 
-user_extra_fields = {}
-
 
 def get_user_signup_fields():
     return getattr(
@@ -41,7 +39,7 @@ def exclude_fields_from_user_details():
     return getattr(settings, "TGR_EXCLUDED_USER_FIELDS", [])
 
 
-def _user_extra_fields(validate=False):
+def get_user_extra_fields(validate=False):
     fields = getattr(settings, "TGR_USER_EXTRA_FIELDS", {})
 
     if validate:
@@ -108,8 +106,7 @@ def configure():
             "formatting token for base64 encoded data"
         )
 
-    global user_extra_fields
-    user_extra_fields = _user_extra_fields(validate=True)
+    get_user_extra_fields(validate=True)
 
 
 configure()

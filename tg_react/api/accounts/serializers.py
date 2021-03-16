@@ -12,8 +12,8 @@ from django.utils.translation import ugettext as _
 from tg_react.settings import (
     exclude_fields_from_user_details,
     get_user_signup_fields,
-    user_extra_fields,
     get_email_case_sensitive,
+    get_user_extra_fields,
 )
 
 
@@ -39,6 +39,13 @@ class UserDetailsSerializer(serializers.ModelSerializer):
             "date_joined": {"read_only": True},
             "last_login": {"read_only": True},
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in exclude_fields_from_user_details():
+            if field in self.fields:
+                del self.fields[field]
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -71,7 +78,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     def get_fields(self):
         static_fields = super().get_fields()
 
-        for name, cfg in user_extra_fields.items():
+        for name, cfg in get_user_extra_fields().items():
             static_fields[name] = cfg[0](**cfg[1])
 
         return static_fields
@@ -118,9 +125,7 @@ class AuthenticationSerializer(serializers.Serializer):
                 _("Unable to login with provided credentials.")
             )
 
-        raise serializers.ValidationError(
-            _("Please enter both email and password.")
-        )
+        raise serializers.ValidationError(_("Please enter both email and password."))
 
     def create(self, validated_data):
         return validated_data

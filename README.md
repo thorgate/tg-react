@@ -1,7 +1,7 @@
 # tg-react
 
 ![https://badge.fury.io/py/tg-react](https://badge.fury.io/py/tg-react.png)
-![https://travis-ci.org/thorgate/tg-react](https://travis-ci.org/thorgate/tg-react.png?branch=master)
+![Workflow status](https://github.com/thorgate/tg-react/actions/workflows/python-package.yml/badge.svg?branch=master)
 
 Helpers for react based applications running on django.
 

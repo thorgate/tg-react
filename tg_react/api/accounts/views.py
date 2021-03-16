@@ -62,7 +62,7 @@ def do_logout(request):
 
     old_user = request.user
 
-    from django.contrib.auth import logout # NOQA
+    from django.contrib.auth import logout  # NOQA
 
     logout(request)
 

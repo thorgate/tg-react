@@ -10,7 +10,7 @@ from model_bakery import baker
 from rest_framework.fields import CharField
 from rest_framework.test import APIClient
 
-from tg_react.settings import _user_extra_fields, configure
+from tg_react.settings import get_user_extra_fields, configure, exclude_fields_from_user_details
 
 
 @pytest.fixture(scope='function')
@@ -84,6 +84,8 @@ def test_accounts_user_exclude_fields(user_api_client, user, test_user_json, set
     settings.TGR_EXCLUDED_USER_FIELDS = excluded
     configure()
 
+    assert exclude_fields_from_user_details() == excluded
+
     response = user_api_client.get(reverse('api-user-details'))
     assert response.status_code == 200
     assert response.json() == test_user_json
@@ -93,7 +95,7 @@ def test_accounts_user_exclude_fields(user_api_client, user, test_user_json, set
 def test_user_extra_fields(settings):
     with pytest.raises(ImproperlyConfigured) as exc_info:
         settings.TGR_USER_EXTRA_FIELDS = []
-        _user_extra_fields(validate=True)
+        get_user_extra_fields(validate=True)
 
     assert "TGR_USER_EXTRA_FIELDS must be a dict" in str(
         exc_info.value
@@ -103,7 +105,7 @@ def test_user_extra_fields(settings):
         settings.TGR_USER_EXTRA_FIELDS = {
             "yolo": False,
         }
-        _user_extra_fields(validate=True)
+        get_user_extra_fields(validate=True)
 
     assert "TGR_USER_EXTRA_FIELDS value must be a module path or list[path, kwargs]" in str(
         exc_info.value
@@ -113,7 +115,7 @@ def test_user_extra_fields(settings):
         settings.TGR_USER_EXTRA_FIELDS = {
             "yolo": {},
         }
-        _user_extra_fields(validate=True)
+        get_user_extra_fields(validate=True)
 
     assert "TGR_USER_EXTRA_FIELDS value must be a module path or list[path, kwargs]" in str(
         exc_info.value
@@ -122,7 +124,7 @@ def test_user_extra_fields(settings):
     settings.TGR_USER_EXTRA_FIELDS = {
         "yolo": "rest_framework.fields.CharField",
     }
-    extra_fields = _user_extra_fields(validate=True)
+    extra_fields = get_user_extra_fields(validate=True)
 
     assert extra_fields == {
         "yolo": [CharField, {}],
