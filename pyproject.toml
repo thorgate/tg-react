@@ -48,7 +48,8 @@ pytest-xdist = "==2.*"
 prospector = "*"
 mock = ">=1.0.1"
 sphinx = "==3.*"
-
+tox = "*"
+tox-travis = "*"
 tox-poetry = "*"
 
 example = { path = "./demo", develop = true }

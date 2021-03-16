@@ -8,35 +8,35 @@ python:
     - "3.9"
 
 env:
-  - DJANGO=2.1
   - DJANGO=2.2
   - DJANGO=3.0
   - DJANGO=3.1
+  global:
+    secure: |
+      B3ocZQIgc3y13jGgbCBPTqiToke1X9j3E5LBxRdicHbNBUO66RWy5+i6vNUwt8m+EEg738L1Or3Q//CHO3HuKRLtxz4jn
+      I/nPa6ZhHE3eNDGz/Vp8FHmycOiN0BYT4h3wS4B2nLAh46PPMTdv7Jg8L4yy7qr15le72/LNsRYJVAxCi+ggk/Jf87d8T
+      8Vqo31huKs7SoSjMcM8jELQsyfDuw1MC2EyPJhK47KjmzWO0G37wnesbMCIkLwLaSX0trkBySBlHdWdQJoKT4+1SiXK1g
+      yMoeewLyUjeN7qV2UQQAJnBh0SFHYJPfTGH40boGueKkLLugjuJGFYbPHhWMGucZxLMLbsRQ9LfU69dAVVqyAeg+ooLh9
+      vW05atH4wruAREbbzwCD4dAIty9sndfXXM885RxjxUdq8QcCVzv4t2d+xHPliCCu68y5qkU0iH8EbPz1VDu6OeGsC3Chf
+      UxWPpgNv+6FDh4tNOXfIRTqeXrHXsUou4h2JeeBruc3Ky3zMaU4wO+6F4Iu32ryECHzsypAtmDke5cgBWXqR5EwZspyJl
+      6tGytxkYeCMnQ9MW8M3GnAR4TiI/MKHT2VO5Pvb9IJRSaS6EsnXNJlH02IteXTe39LUGHwdkluO5cfjNj2ky6x7wNEpij
+      KsqIALPPQDcDc1CFzunntYvU16gbSSzk=
 
 install:
-  - pip install tox tox-travis
+  - pip install tox tox-travis tox-poetry
 
 script:
   - tox
+  - poetry --help
 
 after_success:
   - test $TOXENV = "py39-django31" && coveralls
 
 deploy:
-  provider: pypi
-  user: thorgate
-  password:
-    secure: >
-      ed+XJteAdeeS8DmnACV3UKSu/s/qMv6u6xPITGKQomkAhxuJFo3m8LRjm3lMnJI1NN8EIuYCiMjHPEEXXwqi8+uGwUzPNpqYwBjrK8v6TVUxY
-      tNLIwTzhwRu+pt/V3BxnhyqTEwF0NAi+diIqeQVsVPl8lHrQRye+y4Sco33VKGtJi5+8qgdYnbh5xA5QeZmDSkT/n1mJE9C9p0O6Dlgco2kwC
-      MI/YoCSM3y3jKH53ZMdYHf6FOWgMYoyaNjUEc2jGJyfp61X3+JQJhg8jxSFHNl06vzp+Eyei90RMMM/QccBSXUMSdAdXBXoDnmoQ7PGV8OUU5
-      H4r9TCbwpP4UzyxboyE2MK9+XyyIPiP9Cj0z78oIBfYSINiOoEOwaSAgU8P49ok3Ba7oIKBWXeI13rgo2JSkWPTdhhHESmeVIeX30HoyY41u3
-      eC3nPzsDIUdBzcgMK1bZ+4WgiEjsKpER7SPgpvxULBPHtaNZlnovRVD+QiYWnmxHbqnpLrgMCT3NRJsoWm9AZErHkRKzu3213kaDf1k7ivDad
-      r7iZnEoDEj8Vjp1qQF0rnbu8/eFKh5XG/myNIihrfpy89A9Mp0mAuhaRweJyz3eGoio856o+3fF+bpUzi4qVN4vYRlryt+3nb0K5qamT60Zvk
-      bP8SL3hRUQy0ifWFZW7q8tGSBcM+w=
+  provider: script
+  script: poetry publish --username __token__ --password $PYPI_TOKEN --build
   on:
     tags: true
-    distributions: sdist bdist_wheel
     repo: thorgate/tg-react
     python: "3.9"
     condition: "$DJANGO = 3.1"
