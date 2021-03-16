@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.contrib.auth import get_user_model
-from django.utils.translation import ugettext as _, get_language_from_request
+from django.utils.translation import gettext as _, get_language_from_request
 
 from .serializers import (
     AuthenticationSerializer,

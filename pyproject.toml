@@ -51,6 +51,7 @@ sphinx = "==3.*"
 tox = "*"
 tox-travis = "*"
 tox-poetry = "*"
+tox-gh-actions = "*"
 
 example = { path = "./demo", develop = true }
 
@@ -67,7 +68,7 @@ DJANGO_SETTINGS_MODULE = "dummy_settings"
 django_find_project = "false"
 python_files = "tests/*.py tests/**/*.py"
 norecursedirs = "venv* dist* htmlcov* example* .tox*"
-addopts = "--capture=no --strict -n auto"
+addopts = "--capture=no -n auto"
 
 [tool.black]
 line-length = 88
