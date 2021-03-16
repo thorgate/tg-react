@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TG-React\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-01 15:56+0300\n"
+"POT-Creation-Date: 2021-03-16 14:15+0200\n"
 "PO-Revision-Date: 2017-10-01 14:42+0300\n"
 "Last-Translator: Jürno Ader <jyrno@thorgate.eu>\n"
 "Language-Team: Estonian\n"
@@ -13,57 +13,57 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: api/accounts/serializers.py:33 api/accounts/serializers.py:132
+#: api/accounts/serializers.py:66 api/accounts/serializers.py:200
 msgid "User with this e-mail address already exists."
 msgstr "Sellise e-mailiga kasutaja juba eksisteerib."
 
-#: api/accounts/serializers.py:67
+#: api/accounts/serializers.py:108
 msgid "Your account has been disabled."
 msgstr "Sinu konto on blokeeritud."
 
-#: api/accounts/serializers.py:76
+#: api/accounts/serializers.py:118
 msgid "Unable to login with provided credentials."
 msgstr "Antud e-maili ja parooliga ei õnnestu sisse logida."
 
-#: api/accounts/serializers.py:78
+#: api/accounts/serializers.py:122
 msgid "Please enter both email and password."
 msgstr "Palun sisestage nii email kui ka parool."
 
-#: api/accounts/serializers.py:95
+#: api/accounts/serializers.py:143
 msgid "Phone number needs to include valid country code (E.g +37255555555)."
 msgstr "Telefoninumber peab sisaldama korrektset riigikoodi (nt +37255555555)."
 
-#: api/accounts/serializers.py:97
+#: api/accounts/serializers.py:147
 msgid "The phone number entered is not valid."
 msgstr "Sisestatud telefoninumber ei ole korrektne."
 
-#: api/accounts/serializers.py:151
+#: api/accounts/serializers.py:224
 msgid "We do not have user with given e-mail address in our system."
 msgstr "Sellise e-mailiga kasutajat ei leitud."
 
-#: api/accounts/serializers.py:179
+#: api/accounts/serializers.py:256
 msgid "Password mismatch."
 msgstr "Paroolid ei kattu."
 
-#: api/accounts/serializers.py:190 api/accounts/serializers.py:198
+#: api/accounts/serializers.py:267 api/accounts/serializers.py:275
 msgid "Broken data."
 msgstr "Vigased andmed."
 
-#: api/accounts/serializers.py:205
+#: api/accounts/serializers.py:282
 msgid "User not found."
 msgstr "Kasutajat ei leitud."
 
-#: api/accounts/serializers.py:209
+#: api/accounts/serializers.py:288
 msgid ""
 "This password recovery link has expired or associated user does not exist."
 msgstr "Parooli taastamise link on aegunud või seotud kasutajat ei eksisteeri."
 
-#: api/accounts/serializers.py:210
+#: api/accounts/serializers.py:290
 msgid "Use password recovery form to get new e-mail with new link."
 msgstr ""
 "Palun kasutage parooli taastamise vormi, et saada uus e-mail uue lingiga."
 
-#: api/accounts/views.py:184
+#: api/accounts/views.py:235
 msgid "Password restore"
 msgstr "Parooli taastamine"
 

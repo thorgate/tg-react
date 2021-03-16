@@ -4,31 +4,46 @@ from django.utils.module_loading import import_string
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import generics, status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _, get_language_from_request
 
-from .serializers import (AuthenticationSerializer, UserDetailsSerializer, SignupSerializer, ForgotPasswordSerializer,
-                          RecoveryPasswordSerializer, LanguageCodeSerializer)
+from .serializers import (
+    AuthenticationSerializer,
+    UserDetailsSerializer,
+    SignupSerializer,
+    ForgotPasswordSerializer,
+    RecoveryPasswordSerializer,
+    LanguageCodeSerializer,
+)
 
 # for email notifications
 from django.template.loader import get_template
 
-from tg_react.settings import get_password_recovery_url, get_post_login_handler, get_post_logout_handler, \
-    get_signup_skipped_fields
+from tg_react.settings import (
+    get_password_recovery_url,
+    get_post_login_handler,
+    get_post_logout_handler,
+    get_signup_skipped_fields,
+)
 
 
 def do_login(request, user):
-    if hasattr(request, 'session'):
+    if hasattr(request, "session"):
         old_session = request.session.session_key
 
     else:
         old_session = None
 
-    from django.contrib.auth import login
+    from django.contrib.auth import login  # NOQA
+
     login(request, user)
 
     post_login = get_post_login_handler()
@@ -39,7 +54,7 @@ def do_login(request, user):
 
 
 def do_logout(request):
-    if hasattr(request, 'session'):
+    if hasattr(request, "session"):
         old_session = request.session.session_key
 
     else:
@@ -47,7 +62,8 @@ def do_logout(request):
 
     old_user = request.user
 
-    from django.contrib.auth import logout
+    from django.contrib.auth import logout # NOQA
+
     logout(request)
 
     post_logout = get_post_logout_handler()
@@ -64,7 +80,7 @@ class UnsafeSessionAuthentication(SessionAuthentication):
 
 class UserDetails(generics.RetrieveUpdateAPIView):
     serializer_class = UserDetailsSerializer
-    authentication_classes = (SessionAuthentication, )
+    authentication_classes = (SessionAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_object(self):
@@ -76,17 +92,19 @@ class UserDetails(generics.RetrieveUpdateAPIView):
         if user.is_authenticated:
             return super().get(request, *args, **kwargs)
 
-        return Response({'authenticated': False}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
 
     def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
+        partial = kwargs.pop("partial", False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         if serializer.is_valid():
             self.perform_update(serializer)
             return Response(serializer.data)
-        else:
-            return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(
+            {"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class AuthenticationView(APIView):
@@ -96,7 +114,7 @@ class AuthenticationView(APIView):
 
     throttle_classes = ()
     permission_classes = (AllowAny,)
-    authentication_classes = (UnsafeSessionAuthentication, )
+    authentication_classes = (UnsafeSessionAuthentication,)
     serializer_class = AuthenticationSerializer
 
     def post(self, request):
@@ -104,57 +122,73 @@ class AuthenticationView(APIView):
         if serializer.is_valid():
             do_login(request, serializer.user)
 
-            return Response({'success': True})
+            return Response({"success": True})
 
-        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class SetLanguageView(generics.RetrieveUpdateAPIView):
 
     throttle_classes = ()
     permission_classes = (AllowAny,)
-    authentication_classes = (UnsafeSessionAuthentication, )
+    authentication_classes = (UnsafeSessionAuthentication,)
     serializer_class = LanguageCodeSerializer
 
     @property
     def raw_request(self):
-        return self.request._request
+        return self.request._request  # pylint: disable=protected-access
 
     def get_object(self):
-        return {'language_code': getattr(self.raw_request, '_lang', get_language_from_request(self.raw_request))}
+        return {
+            "language_code": getattr(
+                self.raw_request, "_lang", get_language_from_request(self.raw_request)
+            )
+        }
 
     def update(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            setattr(self.raw_request, 'update_language_cookie', serializer.validated_data['language_code'])
-            setattr(self.raw_request, '_lang', serializer.validated_data['language_code'])
+            setattr(
+                self.raw_request,
+                "update_language_cookie",
+                serializer.validated_data["language_code"],
+            )
+            setattr(
+                self.raw_request, "_lang", serializer.validated_data["language_code"]
+            )
 
             return self.get(request, *args, **kwargs)
 
-        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class LogoutView(APIView):
     throttle_classes = ()
-    permission_classes = (IsAuthenticated, )
-    authentication_classes = (SessionAuthentication, )
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
 
     def post(self, request):
         do_logout(request)
 
-        return Response({'success': True})
+        return Response({"success": True})
 
 
 class SignUpView(APIView):
     serializer_class = SignupSerializer
-    permission_classes = (AllowAny, )
-    authentication_classes = (UnsafeSessionAuthentication, )
+    permission_classes = (AllowAny,)
+    authentication_classes = (UnsafeSessionAuthentication,)
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer = self.serializer_class(
+            data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             data = serializer.validated_data.copy()
-            password = data.pop('password', None)
+            password = data.pop("password", None)
 
             for skipped_field in get_signup_skipped_fields():
                 data.pop(skipped_field, None)
@@ -163,14 +197,17 @@ class SignUpView(APIView):
             user.set_password(password)
             user.save()
 
-            from django.contrib.auth import authenticate
-            user = authenticate(email=data['email'], password=password)
+            from django.contrib.auth import authenticate  # NOQA
+
+            user = authenticate(email=data["email"], password=password)
 
             do_login(request, user)
 
-            return Response({'success': True})
+            return Response({"success": True})
 
-        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class ForgotPassword(APIView):
@@ -184,20 +221,21 @@ class ForgotPassword(APIView):
     # }
 
     serializer_class = ForgotPasswordSerializer
-    authentication_classes = (UnsafeSessionAuthentication, )
-    permission_classes = (AllowAny, )
+    authentication_classes = (UnsafeSessionAuthentication,)
+    permission_classes = (AllowAny,)
 
     def send_email_notification(self, user, uid_and_token_b64):
         # define email notification logic
-        from django.core.mail import EmailMultiAlternatives
+        from django.core.mail import EmailMultiAlternatives  # NOQA
+
         # make confirm reset url
         path = get_password_recovery_url() % uid_and_token_b64
         confirm_reset_url = settings.SITE_URL + path
 
         subject = _("Password restore")
-        context = {'user': user, 'confirm_reset_url': confirm_reset_url}
-        text_content = get_template('emails/password_reset.txt').render(context)
-        html_content = get_template('emails/password_reset.html').render(context)
+        context = {"user": user, "confirm_reset_url": confirm_reset_url}
+        text_content = get_template("emails/password_reset.txt").render(context)
+        html_content = get_template("emails/password_reset.html").render(context)
 
         msg = EmailMultiAlternatives(subject, text_content, to=[user.email])
         msg.attach_alternative(html_content, "text/html")
@@ -206,10 +244,14 @@ class ForgotPassword(APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            self.send_email_notification(serializer.user, serializer.validated_data['uid_and_token_b64'])
-            return Response({'success': True})
+            self.send_email_notification(
+                serializer.user, serializer.validated_data["uid_and_token_b64"]
+            )
+            return Response({"success": True})
 
-        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class RestorePassword(APIView):
@@ -225,15 +267,17 @@ class RestorePassword(APIView):
     # }
 
     serializer_class = RecoveryPasswordSerializer
-    authentication_classes = (UnsafeSessionAuthentication, )
-    permission_classes = (AllowAny, )
+    authentication_classes = (UnsafeSessionAuthentication,)
+    permission_classes = (AllowAny,)
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             user = serializer.user
-            user.set_password(serializer.validated_data['password'])
+            user.set_password(serializer.validated_data["password"])
             user.save()
-            return Response({'success': True})
+            return Response({"success": True})
 
-        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
+        )

@@ -25,17 +25,21 @@ pip-log.txt
 
 # Unit test / coverage reports
 .coverage
+.coverage*
 .tox
 nosetests.xml
 htmlcov/
 
 # Translations for tests
-example/**/*.mo
+demo/example/**/*.mo
 
 # Mr Developer
 .mr.developer.cfg
 .project
 .pydevproject
+
+# local database
+**/*.sqlite3
 
 # Pycharm
 .idea

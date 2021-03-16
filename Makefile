@@ -27,11 +27,13 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 
 lint:
-	flake8 tg_react tests
+	prospector
+
+black:
+	black demo dummy_settings.py tg_react
 
 test:
-	cd example && ./manage.py compilemessages
-	py.test -n auto
+	py.test
 
 test-all:
 	tox
@@ -46,14 +48,6 @@ docs:
 	sphinx-apidoc -o docs/ tg_react
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
-
-release: clean
-	python setup.py sdist upload
-	python setup.py bdist_wheel upload
-
-sdist: clean
-	python setup.py sdist
-	ls -l dist
 
 tg_react/locale:
 	mkdir -p tg_react/locale
