@@ -50,11 +50,10 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
 
-        if data:
-            if "email" in data and not get_email_case_sensitive():
-                data["email"] = (
-                    data["email"].lower() if data["email"] else data["email"]
-                )
+        if not get_email_case_sensitive():
+            email = data and data.get("email")
+            if email:
+                data["email"] = email.lower()
 
         return data
 
