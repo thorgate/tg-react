@@ -7,4 +7,4 @@ import sys
 BASE_DIR = os.path.dirname(__file__)
 
 sys.path.append(os.path.join(BASE_DIR, '..'))
-sys.path.append(os.path.join(BASE_DIR, '..', 'example'))
+sys.path.append(os.path.join(BASE_DIR, '..', 'demo'))

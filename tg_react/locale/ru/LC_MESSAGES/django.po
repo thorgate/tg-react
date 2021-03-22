@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TG-React\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-01 15:56+0300\n"
+"POT-Creation-Date: 2021-03-16 14:15+0200\n"
 "PO-Revision-Date: 2017-10-01 14:42+0300\n"
 "Last-Translator: Jürno Ader <jyrno@thorgate.eu>\n"
 "Language-Team: Russian\n"
@@ -15,62 +15,62 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: api/accounts/serializers.py:33 api/accounts/serializers.py:132
+#: api/accounts/serializers.py:66 api/accounts/serializers.py:200
 msgid "User with this e-mail address already exists."
 msgstr "Уже существует пользователь с этим адресом э-почты"
 
-#: api/accounts/serializers.py:67
+#: api/accounts/serializers.py:108
 msgid "Your account has been disabled."
 msgstr "Ваш аккаунт отключен."
 
-#: api/accounts/serializers.py:76
+#: api/accounts/serializers.py:118
 msgid "Unable to login with provided credentials."
 msgstr "Не удается войти в систему с полученными данными."
 
-#: api/accounts/serializers.py:78
+#: api/accounts/serializers.py:122
 msgid "Please enter both email and password."
 msgstr "Введите электронный адрес и пароль."
 
-#: api/accounts/serializers.py:95
+#: api/accounts/serializers.py:143
 msgid "Phone number needs to include valid country code (E.g +37255555555)."
 msgstr ""
 "Телефонный номер должен содержать действующий код государства (например: "
 "+372 55 555 555)"
 
-#: api/accounts/serializers.py:97
+#: api/accounts/serializers.py:147
 msgid "The phone number entered is not valid."
 msgstr "Введенный телефонный номер недействителен."
 
-#: api/accounts/serializers.py:151
+#: api/accounts/serializers.py:224
 msgid "We do not have user with given e-mail address in our system."
 msgstr "В нашей системе нет пользователя с этим адресом э-почты."
 
-#: api/accounts/serializers.py:179
+#: api/accounts/serializers.py:256
 msgid "Password mismatch."
 msgstr "Пароли не совпадают."
 
-#: api/accounts/serializers.py:190 api/accounts/serializers.py:198
+#: api/accounts/serializers.py:267 api/accounts/serializers.py:275
 msgid "Broken data."
 msgstr "Поврежденные данные."
 
-#: api/accounts/serializers.py:205
+#: api/accounts/serializers.py:282
 msgid "User not found."
 msgstr "Пользователь не найден."
 
-#: api/accounts/serializers.py:209
+#: api/accounts/serializers.py:288
 msgid ""
 "This password recovery link has expired or associated user does not exist."
 msgstr ""
 "Ссылка для восстановления пароля истекла или данный пользователь не "
 "существует."
 
-#: api/accounts/serializers.py:210
+#: api/accounts/serializers.py:290
 msgid "Use password recovery form to get new e-mail with new link."
 msgstr ""
 "Воспользуйтесь формой восстановления пароля, чтобы получить электронное "
 "письмо с новой ссылкой."
 
-#: api/accounts/views.py:184
+#: api/accounts/views.py:235
 msgid "Password restore"
 msgstr "Восстановление пароля"
 

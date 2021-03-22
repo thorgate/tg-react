@@ -1,1 +1,1 @@
-SECRET_KEY = "dummy"
+from example.settings import *  # NOQA

@@ -1,0 +1,89 @@
+[tool.poetry]
+name = "tg-react"
+version = "3.0.0b0"
+description = "Helpers for react based applications running on django."
+authors = ["Thorgate <jyrno@thorgate.eu>"]
+license = "BSD"
+homepage = "https://github.com/thorgate/tg-react"
+repository = "https://github.com/thorgate/tg-react"
+readme = "README.md"
+packages = [
+    { include = "tg_react" },
+]
+include = [
+    "tg_react/**/*.txt",
+    "tg_react/**/*.html",
+    "tg_react/**/*.mo",
+    "tg_react/**/*.po"
+]
+keywords = ["tg-react", "thorgate", "rest", "drf"]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Framework :: Django',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: BSD License',
+    'Natural Language :: English',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+]
+
+[tool.poetry.dependencies]
+django = "django>=2.1.5,<4.0"
+djangorestframework = ">=3.6.4"
+
+python = ">=3.6,<4"
+
+[tool.poetry.dev-dependencies]
+pytest = "==6.*"
+coverage = "==5.*"
+coveralls = "==3.*"
+pytest-cov = "==2.*"
+pytest-django = "==4.*"
+pytest-xdist = "==2.*"
+model-bakery = "==1.*"
+black = "^20.8b1"
+prospector = "*"
+mock = ">=1.0.1"
+sphinx = "==3.*"
+tox = "*"
+tox-travis = "*"
+tox-poetry = "*"
+tox-gh-actions = "*"
+
+example = { path = "./demo", develop = true }
+
+[build-system]
+requires = ["poetry-core>=1.1.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+max-line-length = 140
+require-code = true
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "dummy_settings"
+django_find_project = "false"
+python_files = "tests/*.py tests/**/*.py"
+norecursedirs = "venv* dist* htmlcov* example* .tox*"
+addopts = "--capture=no -n auto"
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+exclude = '''
+
+(
+  \.eggs         # exclude a few common directories in the
+| \.git          # root of the project
+| \.mypy_cache
+| \.tox
+| \.venv
+| _build
+| build
+| dist
+| docs
+)
+'''
