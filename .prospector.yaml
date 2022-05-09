@@ -9,7 +9,7 @@ ignore-paths:
 ignore-patterns:
     - htmlcov/
 
-pep8:
+pycodestyle:
     enable:
         # This is the current list of error and warning codes from:
         # https://github.com/PyCQA/pep8-naming
@@ -82,5 +82,7 @@ pep8:
 pylint:
     disable:
         - unused-argument
+        - raise-missing-from
     options:
         max-line-length: 140
+        django-settings-module: dummy_settings
