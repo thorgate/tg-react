@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tg-react"
-version = "3.0.0b0"
+version = "3.0.0"
 description = "Helpers for react based applications running on django."
 authors = ["Thorgate <jyrno@thorgate.eu>"]
 license = "BSD"
@@ -28,23 +28,24 @@ classifiers = [
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
 ]
 
 [tool.poetry.dependencies]
-django = ">=2.1.5,<4.0"
+django = ">=2.1.5"
 djangorestframework = ">=3.6.4"
 
-python = ">=3.6,<4"
+python = ">=3.6.2,<4"
 
 [tool.poetry.dev-dependencies]
-pytest = "==6.*"
-coverage = "==5.*"
-coveralls = "==3.*"
-pytest-cov = "==2.*"
-pytest-django = "==4.*"
-pytest-xdist = "==2.*"
-model-bakery = "==1.*"
-black = "^20.8b1"
+pytest = "==7.*"
+coverage = "*"
+coveralls = "*"
+pytest-cov = "*"
+pytest-django = "*"
+pytest-xdist = "*"
+model-bakery = "*"
+black = "==22.3.0"
 prospector = "*"
 mock = ">=1.0.1"
 sphinx = "==3.*"
