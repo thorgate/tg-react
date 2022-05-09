@@ -99,7 +99,7 @@ def configure():
         raise ImproperlyConfigured("settings.TGR_PASSWORD_RECOVERY_URL must be str")
 
     try:
-        recovery_url % "TEST"
+        recovery_url % "TEST"  # NOQA
     except TypeError:
         raise ImproperlyConfigured(
             "settings.TGR_PASSWORD_RECOVERY_URL must contain a string "
