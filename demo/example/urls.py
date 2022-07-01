@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.http.response import HttpResponse
 from django.urls import re_path, include
 
