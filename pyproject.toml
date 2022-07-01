@@ -50,7 +50,6 @@ prospector = "*"
 mock = ">=1.0.1"
 sphinx = "==3.*"
 tox = "*"
-tox-travis = "*"
 tox-poetry = "*"
 tox-gh-actions = "*"
 

@@ -121,8 +121,8 @@ Before you submit a pull request, check that it meets these guidelines:
     ```
 
 4. The pull request should work for Python 3.6, 3.7, 3.8 and 3.9. Check
-   https://travis-ci.org/thorgate/tg-react/pull_requests
-   and make sure that the tests pass for all supported Python versions.
+   https://github.com/thorgate/tg-react/actions and make sure that the tests
+   pass for all supported Python versions.
 
 Tips
 ----
