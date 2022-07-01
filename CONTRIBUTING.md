@@ -120,7 +120,7 @@ Before you submit a pull request, check that it meets these guidelines:
     poetry run make update-messages
     ```
 
-4. The pull request should work for Python 3.6, 3.7, 3.8 and 3.9. Check
+4. The pull request should work for Python 3.7, 3.8, 3.9 and 3.10. Check
    https://github.com/thorgate/tg-react/actions and make sure that the tests
    pass for all supported Python versions.
 
