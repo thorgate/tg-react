@@ -80,27 +80,27 @@ Ready to contribute? Here's how to set up `tg-react` for local development.
     poetry install
     ```
 
-4. Create a branch for local development::
+5. Create a branch for local development::
     ```shell
     git checkout -b name-of-your-bugfix-or-feature
     ```
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass linters and the tests, including testing other Python versions with tox:
+6. When you're done making changes, check that your changes pass linters and the tests, including testing other Python versions with tox:
     ```shell
-    poetry run lint
-    poetry run test
-    poetry run test-all
+    poetry run make lint
+    poetry run make test
+    poetry run make test-all
     ```
 
-6. Commit your changes and push your branch to GitHub::
+7. Commit your changes and push your branch to GitHub::
     ```shell
     git add .
     git commit -m "Your detailed description of your changes."
     git push origin name-of-your-bugfix-or-feature
     ```
 
-7. Submit a pull request through the GitHub website.
+8. Submit a pull request through the GitHub website.
 
 ## Pull Request Guidelines
 
@@ -109,7 +109,7 @@ Before you submit a pull request, check that it meets these guidelines:
 1. The pull request should include tests.
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
-   feature to the list in README.rst. You should also update the documentation
+   feature to the list in README.md. You should also update the documentation
    source files via::
     ```shell
     poetry run make docs
@@ -136,7 +136,7 @@ poetry run make test-all
 To run a subset of tests:
 
 ```shell
-poetry run py.test tests.test_tg_react
+poetry run pytest tests.test_tg_react
 ```
 
 Update documentation source files and generate it:
