@@ -5,7 +5,6 @@ source =
 
 omit =
     */migrations/*
-    setup.py
     example
 
 [html]

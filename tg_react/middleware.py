@@ -19,8 +19,8 @@ class LocaleMiddleware:
         return translation.get_language_from_request(request)
 
     def process_request(self, request):
-        if request.META.get("HTTP_ACCEPT_LANGUAGE", None) is not None:
-            del request.META["HTTP_ACCEPT_LANGUAGE"]
+        if request.headers.get('Accept-Language', None) is not None:
+            del request.headers['Accept-Language']
 
         translation.activate(self.get_language_for_user(request))
         request.LANGUAGE_CODE = translation.get_language()

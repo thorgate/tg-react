@@ -1,4 +1,4 @@
-.PHONY: help clean clean-build clean-pyc lint test test-all test-full coverage docs release sdist update-messages add-locale
+.PHONY: help clean clean-build clean-pyc lint black test test-all test-full coverage docs update-messages add-locale
 
 help:
 	@echo "clean-build - remove build artifacts"
@@ -9,8 +9,6 @@ help:
 	@echo "test-full - shorthand for test lint coverage"
 	@echo "coverage - check code coverage quickly with the default Python"
 	@echo "docs - generate Sphinx HTML documentation, including API docs"
-	@echo "release - package and upload a release"
-	@echo "sdist - package"
 	@echo "update-messages - Update translation files"
 	@echo "add-locale - Add a new translation locale"
 
@@ -33,7 +31,7 @@ black:
 	black demo dummy_settings.py tg_react
 
 test:
-	py.test
+	pytest
 
 test-all:
 	tox
@@ -41,7 +39,7 @@ test-all:
 test-full: test lint coverage
 
 coverage:
-	py.test --cov-config .coveragerc --cov=tg_react --cov-report html --cov-report term-missing
+	pytest --cov-config .coveragerc --cov=tg_react --cov-report html --cov-report term-missing
 
 docs:
 	mkdir -p docs/_static
