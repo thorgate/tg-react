@@ -12,38 +12,38 @@ class LocaleMiddleware:
     This also allows us to update the language cookie whenever our api endpoint is used.
     """
 
+    def __init__(self, get_response):
+        self.get_response = get_response
+
     def get_language_for_user(self, request):
-        if request.user.is_authenticated() and hasattr(request.user, "language"):
+        if request.user.is_authenticated and hasattr(request.user, "language"):
             return getattr(request.user, "language")
 
         return translation.get_language_from_request(request)
 
-    def process_request(self, request):
-        if request.headers.get('Accept-Language', None) is not None:
-            del request.headers['Accept-Language']
+    def __call__(self, request):
+        with translation.override(self.get_language_for_user(request)):
+            request.LANGUAGE_CODE = translation.get_language()
+            response = self.get_response(request)
 
-        translation.activate(self.get_language_for_user(request))
-        request.LANGUAGE_CODE = translation.get_language()
+            language = getattr(request, "update_language_cookie", False)
 
-    def process_response(self, request, response):
-        language = getattr(request, "update_language_cookie", False)
+            if language:
+                if request.user.is_authenticated and hasattr(request.user, "language"):
+                    language = getattr(request.user, "language")
 
-        if language:
-            if request.user.is_authenticated() and hasattr(request.user, "language"):
-                language = getattr(request.user, "language")
+                else:
+                    language = language or request.LANGUAGE_CODE
 
-            else:
-                language = language or request.LANGUAGE_CODE
+                response.set_cookie(
+                    settings.LANGUAGE_COOKIE_NAME,
+                    language,
+                    max_age=settings.LANGUAGE_COOKIE_AGE,
+                    path=settings.LANGUAGE_COOKIE_PATH,
+                    domain=settings.LANGUAGE_COOKIE_DOMAIN,
+                )
 
-            response.set_cookie(
-                settings.LANGUAGE_COOKIE_NAME,
-                language,
-                max_age=settings.LANGUAGE_COOKIE_AGE,
-                path=settings.LANGUAGE_COOKIE_PATH,
-                domain=settings.LANGUAGE_COOKIE_DOMAIN,
-            )
+            patch_vary_headers(response, ("Accept-Language",))
+            response["Content-Language"] = translation.get_language()
 
-        patch_vary_headers(response, ("Accept-Language",))
-        response["Content-Language"] = translation.get_language()
-        translation.deactivate()
         return response

@@ -1,8 +1,12 @@
 [tool.poetry]
 name = "tg-react"
-version = "3.0.0"
+version = "3.1.0"
 description = "Helpers for react based applications running on django."
-authors = ["Thorgate <jyrno@thorgate.eu>"]
+authors = [
+    "Thorgate <code@thorgate.eu>",
+    "Jyrno Ader <jyrno@thorgate.eu>",
+    "Jorgen Ader <jorgen@thorgate.eu>",
+]
 license = "BSD"
 homepage = "https://github.com/thorgate/tg-react"
 repository = "https://github.com/thorgate/tg-react"
@@ -24,7 +28,6 @@ classifiers = [
     'License :: OSI Approved :: BSD License',
     'Natural Language :: English',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.6',
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
@@ -32,7 +35,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-django = ">=2.2"
+django = ">=2.2, <4.2"
 djangorestframework = ">=3.9.2"
 
 python = ">=3.7,<4"

@@ -287,7 +287,9 @@ class RecoveryPasswordSerializer(serializers.Serializer):
 
         # validate token
         if not default_token_generator.check_token(self.user, token):
-            msg_0 = _("This password recovery link has expired or associated user does not exist.")
+            msg_0 = _(
+                "This password recovery link has expired or associated user does not exist."
+            )
             msg_1 = _("Use password recovery form to get new e-mail with new link.")
 
             raise serializers.ValidationError(f"{msg_0} {msg_1}")
